@@ -1,0 +1,408 @@
+JFDML JFormDesigner: "6.0.0.0.84" Java: "1.8.0_112-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+				name: "computerPanel"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Registers"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 135
+					"y": 25
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label2"
+					"text": "ADDRESS REGISTER"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 20
+					"y": 100
+				} )
+				add( new FormComponent( "javax.swing.JTextPane" ) {
+					name: "textPane1"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 155
+					"y": 110
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "addressRegisterTxtfl"
+					"text": "0 0 0 0 0"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 95
+					"width": 70
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "programCounterTxtfl"
+					"text": "0 0 0 0"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 130
+					"width": 60
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "stackPointerTxtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 165
+					"width": 60
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "inputRegisterTxtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 200
+					"width": 60
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "outputRegisterTxtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 235
+					"width": 60
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "instructionRegisterTxtfl"
+					"text": "0 0 0 0 0 0 0 0 0 0 0"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 60
+					"width": 145
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "register0Txtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 295
+					"width": 60
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "register1Txtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 330
+					"width": 60
+					"height": 24
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "register2Txtfl"
+					"editable": false
+					"text": "0 0 0 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 190
+					"y": 365
+					"width": 60
+					"height": 24
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label3"
+					"text": "PROGRAM COUNTER"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 20
+					"y": 135
+					"width": 145
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label4"
+					"text": "STACK POINTER"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 120
+					"height": 16
+					"x": 20
+					"y": 170
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label5"
+					"text": "INPUT REGISTER"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 110
+					"height": 16
+					"x": 20
+					"y": 205
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label6"
+					"text": "OUTPUT REGISTER"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 125
+					"height": 16
+					"x": 20
+					"y": 235
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label7"
+					"text": "INSTRUCTION REGISTER"
+					"background": new java.awt.Color( 153, 102, 255, 255 )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 155
+					"height": 16
+					"x": 20
+					"y": 65
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label8"
+					"text": "REGISTER 0"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 90
+					"height": 16
+					"x": 20
+					"y": 300
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label9"
+					"text": "REGISTER 1"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 75
+					"height": 16
+					"x": 20
+					"y": 335
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label10"
+					"text": "REGISTER 2"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 85
+					"height": 16
+					"x": 20
+					"y": 370
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label11"
+					"text": "Instruction Memory"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 450
+					"y": 25
+					"width": 140
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "instructionMemoryTxtAr"
+					"rows": 32
+					"tabSize": 11
+					"editable": false
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+						"JavaCodeGenerator.variableName": "instructionMemoryTxtAr"
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 151
+					"x": 455
+					"y": 50
+					"height": 520
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "instMemAddressTxtAr"
+					"rows": 32
+					"editable": false
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 420
+					"y": 50
+					"width": 30
+					"height": 520
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label12"
+					"text": "Data Memory"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 685
+					"y": 25
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "dataMemoryTxtAr"
+					"editable": false
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 710
+					"y": 50
+					"height": 265
+					"width": 65
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "dataMemAddressTxtAr"
+					"editable": false
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 675
+					"y": 50
+					"width": 30
+					"height": 265
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label13"
+					"text": "Stack Memory"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 860
+					"y": 25
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "stackMemAddressTxtAr"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 850
+					"y": 50
+					"height": 265
+					"width": 30
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "StackMemoryTxtAr"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 885
+					"y": 50
+					"height": 265
+					"width": 80
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "stepRun"
+					"text": "Step Run"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 625
+					"y": 430
+					"height": 47
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button1"
+					"text": "Instruction Run"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 715
+					"y": 430
+					"height": 47
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button2"
+					"text": "Run Over"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 845
+					"y": 430
+					"height": 47
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button3"
+					"text": "Exit"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 960
+					"y": 430
+					"height": 47
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label14"
+					"text": "T"
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 20, false )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 55
+					"y": 485
+					"width": 40
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "clockCycle"
+					"text": "0"
+					"cursor": new java.awt.Cursor( 2 )
+					"editable": false
+					"font": new java.awt.Font( ".SF NS Text", 0, 45 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+						"JavaCodeGenerator.variableName": "clockCycle"
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 90
+					"y": 475
+					"width": 45
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 0
+				"y": -15
+				"height": 570
+				"width": 1020
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+				name: "compilePanel"
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane1"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 420
+					"height": 535
+					"x": 0
+					"y": 0
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnCompile"
+					"text": "Compile"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnCompileMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 530
+					"y": 260
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnExit2"
+					"text": "Exit"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExitMouseClicked", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExit2MouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 53
+					"height": 32
+					"x": 640
+					"y": 260
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 770
+				"x": 85
+				"y": 0
+				"height": 535
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+				name: "loginPanel"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnExit"
+					"text": "Exit"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExitMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 235
+					"y": 10
+					"height": 32
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnFileChooser"
+					"text": "Choose a File(.asm or .basm)"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnFileChooserMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 0
+					"y": 10
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 305
+				"height": 45
+				"x": 380
+				"y": 240
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 15, 0 )
+			"size": new java.awt.Dimension( 1025, 580 )
+		} )
+	}
+}
