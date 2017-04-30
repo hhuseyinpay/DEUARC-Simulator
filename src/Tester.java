@@ -7,21 +7,27 @@ import javax.swing.*;
  */
 
 
-
 /**
  * @author hasan pay
  */
 public class Tester extends JFrame {
     private String filePath;
     private FileOperation fo = new FileOperation();
+
     public Tester() {
         initComponents();
-        loginPanel.setVisible(false);
-        compilePanel.setVisible(true);
+        loginPanel.setVisible(true);
+        compilePanel.setVisible(false);
         computerPanel.setVisible(false);
     }
 
-// LOGIN PANEL
+    private void exitProcedure() {
+        int answer = JOptionPane.showConfirmDialog(this, "You want to quit?", "Quit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (answer == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+    // LOGIN PANEL
     private void btnFileChooserMouseClicked(MouseEvent e) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -39,43 +45,45 @@ public class Tester extends JFrame {
     }
 
     private void btnExitMouseClicked(MouseEvent e) {
-        int answer = JOptionPane.showConfirmDialog(this, "You want to quit?", "Quit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (answer == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
+        exitProcedure();
     }
 // END OF LOGIN PANEL
 
-// COMPILE PANEL
+    // COMPILE PANEL
     private void btnExit2MouseClicked(MouseEvent e) {
-        int answer = JOptionPane.showConfirmDialog(this, "You want to quit?", "Quit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (answer == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
+        exitProcedure();
     }
 
     private void btnCompileMouseClicked(MouseEvent e) {
-        for (int i = 0; i < 32; i++) {
-            instMemAddressTxtAr.append(i + "\n");
-        }
-        instructionMemoryTxtAr.setText("0 0 0 0 0 0 0 0 0 0 0");
-
-
-
+        compileInit();
         compilePanel.setVisible(false);
         computerPanel.setVisible(true);
     }
+
+    private void compileInit() {
+        for (int i = 0; i < 32; i++) {
+            instMemAddressTxtAr.append(i + "\n");
+        }
+        for (int i = 0; i < 16; i++) {
+            stackMemAddressTxtAr.append(i + "\n");
+            dataMemAddressTxtAr.append(i + "\n");
+        }
+    }
 // END OF COMPILE PANEL
 
+// COMPUTER PANEL
 
+    private void btnExit3MouseClicked(MouseEvent e) {
+        exitProcedure();
+    }
 
+// END OF COMPUTER PANEL
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - hasan pay
         computerPanel = new JPanel();
         label1 = new JLabel();
         label2 = new JLabel();
-        textPane1 = new JTextPane();
         addressRegisterTxtfl = new JTextField();
         programCounterTxtfl = new JTextField();
         stackPointerTxtfl = new JTextField();
@@ -105,7 +113,7 @@ public class Tester extends JFrame {
         stepRun = new JButton();
         button1 = new JButton();
         button2 = new JButton();
-        button3 = new JButton();
+        btnExit3 = new JButton();
         label14 = new JLabel();
         clockCycle = new JTextField();
         compilePanel = new JPanel();
@@ -141,8 +149,6 @@ public class Tester extends JFrame {
             label2.setText("ADDRESS REGISTER");
             computerPanel.add(label2);
             label2.setBounds(new Rectangle(new Point(20, 100), label2.getPreferredSize()));
-            computerPanel.add(textPane1);
-            textPane1.setBounds(new Rectangle(new Point(155, 110), textPane1.getPreferredSize()));
 
             //---- addressRegisterTxtfl ----
             addressRegisterTxtfl.setText("0 0 0 0 0");
@@ -296,10 +302,16 @@ public class Tester extends JFrame {
             computerPanel.add(button2);
             button2.setBounds(845, 430, button2.getPreferredSize().width, 47);
 
-            //---- button3 ----
-            button3.setText("Exit");
-            computerPanel.add(button3);
-            button3.setBounds(960, 430, button3.getPreferredSize().width, 47);
+            //---- btnExit3 ----
+            btnExit3.setText("Exit");
+            btnExit3.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    btnExit3MouseClicked(e);
+                }
+            });
+            computerPanel.add(btnExit3);
+            btnExit3.setBounds(960, 430, btnExit3.getPreferredSize().width, 47);
 
             //---- label14 ----
             label14.setText("T");
@@ -444,7 +456,6 @@ public class Tester extends JFrame {
     protected JPanel computerPanel;
     private JLabel label1;
     private JLabel label2;
-    private JTextPane textPane1;
     private JTextField addressRegisterTxtfl;
     private JTextField programCounterTxtfl;
     private JTextField stackPointerTxtfl;
@@ -474,7 +485,7 @@ public class Tester extends JFrame {
     private JButton stepRun;
     private JButton button1;
     private JButton button2;
-    private JButton button3;
+    private JButton btnExit3;
     private JLabel label14;
     protected JTextField clockCycle;
     private JPanel compilePanel;
