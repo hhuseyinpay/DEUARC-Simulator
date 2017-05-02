@@ -1,8 +1,11 @@
+import java.io.*;
+
 /**
  * Created by hhp on 29/04/2017.
  */
 
-public class FileOperation {
+
+class FileOperation {
 
     public boolean extentionChecker(String path) {
 
@@ -13,6 +16,26 @@ public class FileOperation {
             }
         }
         return false;
+    }
+
+    public String readFile(String path) {
+        InputStream is = null;
+        BufferedReader buf;
+        StringBuilder sb = new StringBuilder();
+        try {
+            is = new FileInputStream(path);
+
+            buf = new BufferedReader(new InputStreamReader(is));
+            String line = buf.readLine();
+            while (line != null) {
+                sb.append(line).append("\n");
+                line = buf.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString();
     }
 
 

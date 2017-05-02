@@ -6,6 +6,49 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 			name: "this"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+				name: "compilePanel"
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane1"
+					add( new FormComponent( "javax.swing.JTextPane" ) {
+						name: "codePane"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 420
+					"height": 535
+					"x": 0
+					"y": 0
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnCompile"
+					"text": "Compile"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnCompileMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 530
+					"y": 260
+					"width": 100
+					"height": 34
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnExit2"
+					"text": "Exit"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExitMouseClicked", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExit2MouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"width": 100
+					"height": 34
+					"x": 640
+					"y": 260
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 770
+				"x": 85
+				"y": 0
+				"height": 535
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 				name: "computerPanel"
 				auxiliary() {
 					"JavaCodeGenerator.variableModifiers": 4
@@ -336,41 +379,6 @@ new FormModel {
 				"width": 1020
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
-				name: "compilePanel"
-				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "scrollPane1"
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 420
-					"height": 535
-					"x": 0
-					"y": 0
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "btnCompile"
-					"text": "Compile"
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnCompileMouseClicked", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 530
-					"y": 260
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "btnExit2"
-					"text": "Exit"
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExitMouseClicked", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExit2MouseClicked", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 53
-					"height": 32
-					"x": 640
-					"y": 260
-				} )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"width": 770
-				"x": 85
-				"y": 0
-				"height": 535
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 				name: "loginPanel"
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "btnExit"
@@ -388,6 +396,7 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 0
 					"y": 10
+					"height": 32
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 305

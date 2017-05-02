@@ -1,7 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.LinkedList;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 /*
  * Created by JFormDesigner on Sun Apr 30 12:07:32 EEST 2017
  */
@@ -11,8 +16,10 @@ import javax.swing.*;
  * @author hasan pay
  */
 public class Tester extends JFrame {
+    private String fileContent = null;
     private String filePath;
     private FileOperation fo = new FileOperation();
+    private Parser p = new Parser();
 
     public Tester() {
         initComponents();
@@ -27,6 +34,36 @@ public class Tester extends JFrame {
             System.exit(0);
         }
     }
+
+    private void codePrint(LinkedList<LexNode> code) {
+        StyledDocument doc = codePane.getStyledDocument();
+        Style style = codePane.addStyle("first style", null);
+        StyleConstants.setForeground(style, Color.black);
+
+        for (LexNode ln : code) {
+            //System.out.println(ln.isWrong());
+            if (ln.isWrong()) {
+                StyleConstants.setForeground(style, Color.red);
+                try {
+                    doc.insertString(doc.getLength(), ln.getLine(), style);
+                } catch (BadLocationException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                StyleConstants.setForeground(style, Color.black);
+                continue;
+
+            }
+
+
+            try {
+                doc.insertString(doc.getLength(), ln.getLine(), style);
+            } catch (BadLocationException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     // LOGIN PANEL
     private void btnFileChooserMouseClicked(MouseEvent e) {
         JFileChooser fileChooser = new JFileChooser();
@@ -38,6 +75,11 @@ public class Tester extends JFrame {
             filePath = selectedFile.getAbsolutePath();
 
             if (fo.extentionChecker(filePath)) {
+                fileContent = fo.readFile(filePath);
+
+
+                LinkedList<LexNode> ll = p.parse(fileContent);
+                codePrint(ll);
                 loginPanel.setVisible(false);
                 compilePanel.setVisible(true);
             }
@@ -77,10 +119,15 @@ public class Tester extends JFrame {
         exitProcedure();
     }
 
-// END OF COMPUTER PANEL
+    // END OF COMPUTER PANEL
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - hasan pay
+        // Generated using JFormDesigner Evaluation license - Talha ÃalÄ±
+        compilePanel = new JPanel();
+        scrollPane1 = new JScrollPane();
+        codePane = new JTextPane();
+        btnCompile = new JButton();
+        btnExit2 = new JButton();
         computerPanel = new JPanel();
         label1 = new JLabel();
         label2 = new JLabel();
@@ -116,10 +163,6 @@ public class Tester extends JFrame {
         btnExit3 = new JButton();
         label14 = new JLabel();
         clockCycle = new JTextField();
-        compilePanel = new JPanel();
-        scrollPane1 = new JScrollPane();
-        btnCompile = new JButton();
-        btnExit2 = new JButton();
         loginPanel = new JPanel();
         btnExit = new JButton();
         btnFileChooser = new JButton();
@@ -128,16 +171,72 @@ public class Tester extends JFrame {
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
-        //======== computerPanel ========
+        //======== compilePanel ========
         {
 
             // JFormDesigner evaluation mark
-            computerPanel.setBorder(new javax.swing.border.CompoundBorder(
-                new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-                    "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-                    javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                    java.awt.Color.red), computerPanel.getBorder())); computerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
+            compilePanel.setBorder(new javax.swing.border.CompoundBorder(
+                    new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+                            "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+                            javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+                            java.awt.Color.red), compilePanel.getBorder()));
+            compilePanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+                public void propertyChange(java.beans.PropertyChangeEvent e) {
+                    if ("border".equals(e.getPropertyName())) throw new RuntimeException();
+                }
+            });
 
+            compilePanel.setLayout(null);
+
+            //======== scrollPane1 ========
+            {
+                scrollPane1.setViewportView(codePane);
+            }
+            compilePanel.add(scrollPane1);
+            scrollPane1.setBounds(0, 0, 420, 535);
+
+            //---- btnCompile ----
+            btnCompile.setText("Compile");
+            btnCompile.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    btnCompileMouseClicked(e);
+                }
+            });
+            compilePanel.add(btnCompile);
+            btnCompile.setBounds(530, 260, 100, 34);
+
+            //---- btnExit2 ----
+            btnExit2.setText("Exit");
+            btnExit2.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    btnExitMouseClicked(e);
+                    btnExit2MouseClicked(e);
+                }
+            });
+            compilePanel.add(btnExit2);
+            btnExit2.setBounds(640, 260, 100, 34);
+
+            { // compute preferred size
+                Dimension preferredSize = new Dimension();
+                for (int i = 0; i < compilePanel.getComponentCount(); i++) {
+                    Rectangle bounds = compilePanel.getComponent(i).getBounds();
+                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                }
+                Insets insets = compilePanel.getInsets();
+                preferredSize.width += insets.right;
+                preferredSize.height += insets.bottom;
+                compilePanel.setMinimumSize(preferredSize);
+                compilePanel.setPreferredSize(preferredSize);
+            }
+        }
+        contentPane.add(compilePanel);
+        compilePanel.setBounds(85, 0, 770, 535);
+
+        //======== computerPanel ========
+        {
             computerPanel.setLayout(null);
 
             //---- label1 ----
@@ -329,7 +428,7 @@ public class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < computerPanel.getComponentCount(); i++) {
+                for (int i = 0; i < computerPanel.getComponentCount(); i++) {
                     Rectangle bounds = computerPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -343,52 +442,6 @@ public class Tester extends JFrame {
         }
         contentPane.add(computerPanel);
         computerPanel.setBounds(0, -15, 1020, 570);
-
-        //======== compilePanel ========
-        {
-            compilePanel.setLayout(null);
-            compilePanel.add(scrollPane1);
-            scrollPane1.setBounds(0, 0, 420, 535);
-
-            //---- btnCompile ----
-            btnCompile.setText("Compile");
-            btnCompile.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    btnCompileMouseClicked(e);
-                }
-            });
-            compilePanel.add(btnCompile);
-            btnCompile.setBounds(new Rectangle(new Point(530, 260), btnCompile.getPreferredSize()));
-
-            //---- btnExit2 ----
-            btnExit2.setText("Exit");
-            btnExit2.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    btnExitMouseClicked(e);
-                    btnExit2MouseClicked(e);
-                }
-            });
-            compilePanel.add(btnExit2);
-            btnExit2.setBounds(640, 260, 53, 32);
-
-            { // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for(int i = 0; i < compilePanel.getComponentCount(); i++) {
-                    Rectangle bounds = compilePanel.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = compilePanel.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                compilePanel.setMinimumSize(preferredSize);
-                compilePanel.setPreferredSize(preferredSize);
-            }
-        }
-        contentPane.add(compilePanel);
-        compilePanel.setBounds(85, 0, 770, 535);
 
         //======== loginPanel ========
         {
@@ -414,11 +467,11 @@ public class Tester extends JFrame {
                 }
             });
             loginPanel.add(btnFileChooser);
-            btnFileChooser.setBounds(new Rectangle(new Point(0, 10), btnFileChooser.getPreferredSize()));
+            btnFileChooser.setBounds(0, 10, btnFileChooser.getPreferredSize().width, 32);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < loginPanel.getComponentCount(); i++) {
+                for (int i = 0; i < loginPanel.getComponentCount(); i++) {
                     Rectangle bounds = loginPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -435,7 +488,7 @@ public class Tester extends JFrame {
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
-            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+            for (int i = 0; i < contentPane.getComponentCount(); i++) {
                 Rectangle bounds = contentPane.getComponent(i).getBounds();
                 preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                 preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -452,7 +505,12 @@ public class Tester extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - hasan pay
+    // Generated using JFormDesigner Evaluation license - Talha ÃalÄ±
+    private JPanel compilePanel;
+    private JScrollPane scrollPane1;
+    public JTextPane codePane;
+    private JButton btnCompile;
+    private JButton btnExit2;
     protected JPanel computerPanel;
     private JLabel label1;
     private JLabel label2;
@@ -488,10 +546,6 @@ public class Tester extends JFrame {
     private JButton btnExit3;
     private JLabel label14;
     protected JTextField clockCycle;
-    private JPanel compilePanel;
-    private JScrollPane scrollPane1;
-    private JButton btnCompile;
-    private JButton btnExit2;
     private JPanel loginPanel;
     private JButton btnExit;
     private JButton btnFileChooser;
