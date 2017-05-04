@@ -221,7 +221,19 @@ public class Compiler {
 
             instPointer += 1;
         }
-        return instsTable;
+        return tableMerge();
+    }
+
+    private String[] tableMerge() {
+        String[] tmp = new String[48];
+        for (int i = 0; i < 32; i++) {
+            tmp[i] = instsTable[i];
+        }
+        for (int i = 32; i < 48; i++) {
+            tmp[i] = dataTable[i - 32];
+        }
+
+        return tmp;
     }
 
     private boolean dataController(LinkedList<LexNode> lexList) {
