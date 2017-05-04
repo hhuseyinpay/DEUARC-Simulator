@@ -26,7 +26,7 @@ new FormModel {
 					"text": "Compile"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnCompileMouseClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 530
+					"x": 560
 					"y": 260
 					"width": 100
 					"height": 34
@@ -39,11 +39,24 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"width": 100
 					"height": 34
-					"x": 640
+					"x": 700
 					"y": 260
 				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnParse"
+					"text": "Parse"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnParseMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 450
+					"y": 260
+					"height": 34
+					"width": 100
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"width": 770
+				"width": 860
 				"x": 85
 				"y": 0
 				"height": 535

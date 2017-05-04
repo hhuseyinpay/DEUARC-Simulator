@@ -19,7 +19,9 @@ public class Tester extends JFrame {
     private String fileContent = null;
     private String filePath;
     private FileOperation fo = new FileOperation();
+    LinkedList<LexNode> ll;
     private Parser p = new Parser();
+    private Compiler c = new Compiler();
 
     public Tester() {
         initComponents();
@@ -76,10 +78,8 @@ public class Tester extends JFrame {
 
             if (fo.extentionChecker(filePath)) {
                 fileContent = fo.readFile(filePath);
+                codePane.setText(fileContent);
 
-
-                LinkedList<LexNode> ll = p.parse(fileContent);
-                codePrint(ll);
                 loginPanel.setVisible(false);
                 compilePanel.setVisible(true);
             }
@@ -92,11 +92,25 @@ public class Tester extends JFrame {
 // END OF LOGIN PANEL
 
     // COMPILE PANEL
+
+    private void btnParseMouseClicked(MouseEvent e) {
+        codePane.setText("");
+        ll = p.parse(fileContent);
+        codePrint(ll);
+    }
+
     private void btnExit2MouseClicked(MouseEvent e) {
         exitProcedure();
     }
 
+
     private void btnCompileMouseClicked(MouseEvent e) {
+        codePane.setText("");
+        String[] inst = c.compile(ll);
+        for (int i = 0; i < inst.length; i++) {
+            System.out.println(inst[i]);
+        }
+
         compileInit();
         compilePanel.setVisible(false);
         computerPanel.setVisible(true);
@@ -122,12 +136,13 @@ public class Tester extends JFrame {
     // END OF COMPUTER PANEL
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Talha ÃalÄ±
+        // Generated using JFormDesigner Evaluation license - hasan pay
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
         btnCompile = new JButton();
         btnExit2 = new JButton();
+        btnParse = new JButton();
         computerPanel = new JPanel();
         label1 = new JLabel();
         label2 = new JLabel();
@@ -204,7 +219,7 @@ public class Tester extends JFrame {
                 }
             });
             compilePanel.add(btnCompile);
-            btnCompile.setBounds(530, 260, 100, 34);
+            btnCompile.setBounds(560, 260, 100, 34);
 
             //---- btnExit2 ----
             btnExit2.setText("Exit");
@@ -216,7 +231,18 @@ public class Tester extends JFrame {
                 }
             });
             compilePanel.add(btnExit2);
-            btnExit2.setBounds(640, 260, 100, 34);
+            btnExit2.setBounds(700, 260, 100, 34);
+
+            //---- btnParse ----
+            btnParse.setText("Parse");
+            btnParse.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    btnParseMouseClicked(e);
+                }
+            });
+            compilePanel.add(btnParse);
+            btnParse.setBounds(450, 260, 100, 34);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -233,7 +259,7 @@ public class Tester extends JFrame {
             }
         }
         contentPane.add(compilePanel);
-        compilePanel.setBounds(85, 0, 770, 535);
+        compilePanel.setBounds(85, 0, 860, 535);
 
         //======== computerPanel ========
         {
@@ -505,12 +531,13 @@ public class Tester extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Talha ÃalÄ±
+    // Generated using JFormDesigner Evaluation license - hasan pay
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;
     private JButton btnCompile;
     private JButton btnExit2;
+    protected JButton btnParse;
     protected JPanel computerPanel;
     private JLabel label1;
     private JLabel label2;

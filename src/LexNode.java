@@ -20,8 +20,8 @@ public class LexNode {
         this.lexes = new String[len + 1];
         this.lexes[0] = lex;
 
-        for (int i = 1; i < len+1; i++) {
-            lexes[i] = parameters[i-1];
+        for (int i = 1; i < len + 1; i++) {
+            lexes[i] = parameters[i - 1];
         }
 
         this.isWrong = isWrong;
@@ -35,10 +35,15 @@ public class LexNode {
         return isWrong;
     }
 
+    public void setWrong() {
+        isWrong = true;
+    }
+
+
     public String getLine() {
         StringBuilder sb = new StringBuilder();
 
-        for (String lex:lexes) {
+        for (String lex : lexes) {
             sb.append(lex);
             sb.append(' ');
         }
