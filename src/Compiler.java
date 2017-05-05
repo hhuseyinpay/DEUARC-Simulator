@@ -12,6 +12,9 @@ public class Compiler {
     private Map<String, String> instructions;
     private Map<String, String> registers;
     private Map<String, String> labelTable;
+    private String[] labelTableKeys;
+    private int[] labelAdress;
+    private int labelPointer;
 
     public Compiler() {
         instsTable = new String[32];
@@ -19,7 +22,9 @@ public class Compiler {
         instructions = new HashMap<String, String>();
         registers = new HashMap<String, String>();
         labelTable = new HashMap<String, String>();
-
+        labelTableKeys = new String[16];
+        labelPointer = 0;
+        labelAdress = new int[16];
 
         instructions.put("HLT", "1000");
         instructions.put("ADD", "0000");
@@ -225,12 +230,15 @@ public class Compiler {
     }
 
     private String[] tableMerge() {
-        String[] tmp = new String[48];
+        String[] tmp = new String[64];
         for (int i = 0; i < 32; i++) {
             tmp[i] = instsTable[i];
         }
         for (int i = 32; i < 48; i++) {
             tmp[i] = dataTable[i - 32];
+        }
+        for (int i = 48; i < 64; i++) {
+            tmp[i] = labelTableKeys[i - 48] + "    " + labelAdress[i - 48] + "    " + (labelAdress[i - 48] != 0? dataTable[labelAdress[i - 48]]:null) + "\n"; // GEÇİCİ AT KAFASI ÇÖZÜMÜ
         }
 
         return tmp;
@@ -287,7 +295,9 @@ public class Compiler {
                      */
                     tmp = toBinary(dataPointer, 4);
                     labelTable.put(lex[0].substring(0, lex[0].length() - 1), tmp); // labelTable doldu
-
+                    labelTableKeys[labelPointer] = lex[0].substring(0, lex[0].length() - 1);
+                    labelAdress[labelPointer] = dataPointer;
+                    labelPointer++;
                     dataPointer++;
 
                 } else if (lex[1].equals("HEX")) {
@@ -299,7 +309,9 @@ public class Compiler {
                     dataTable[dataPointer] = tmp;
                     tmp = toBinary(dataPointer, 4);
                     labelTable.put(lex[0].substring(0, lex[0].length() - 1), tmp); // labelTable doldu
-
+                    labelTableKeys[labelPointer] = lex[0].substring(0, lex[0].length() - 1);
+                    labelAdress[labelPointer] = dataPointer;
+                    labelPointer++;
                     dataPointer++;
 
                 } else {

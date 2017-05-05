@@ -164,7 +164,15 @@ class Tester extends JFrame {
 
             dataMemAddressTxtAr.append(i - 32 + "\n");
             dataMemoryTxtAr.append(inst[i] + "\n");
+        }
+        doc = labelTableTxtPn.getStyledDocument();
+        for (int i = 48; i < 64; i++) {
 
+            try {
+                doc.insertString(doc.getLength(), inst[i], style);
+            } catch (BadLocationException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 // END OF COMPILE PANEL
@@ -220,6 +228,9 @@ class Tester extends JFrame {
         btnMainScreen = new JButton();
         label14 = new JLabel();
         clockCycle = new JTextField();
+        labelTableAddrTxtPn = new JTextPane();
+        labelTableTxtPn = new JTextPane();
+        label15 = new JLabel();
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
@@ -397,17 +408,17 @@ class Tester extends JFrame {
             //---- stepRun ----
             stepRun.setText("Step Run");
             computerPanel.add(stepRun);
-            stepRun.setBounds(625, 430, 125, 47);
+            stepRun.setBounds(695, 415, 125, 47);
 
             //---- button1 ----
             button1.setText("Instruction Run");
             computerPanel.add(button1);
-            button1.setBounds(745, 430, button1.getPreferredSize().width, 47);
+            button1.setBounds(825, 415, button1.getPreferredSize().width, 47);
 
             //---- button2 ----
             button2.setText("Run Over");
             computerPanel.add(button2);
-            button2.setBounds(865, 430, 125, 47);
+            button2.setBounds(970, 415, 125, 47);
 
             //---- btnExit3 ----
             btnExit3.setText("Exit");
@@ -418,7 +429,7 @@ class Tester extends JFrame {
                 }
             });
             computerPanel.add(btnExit3);
-            btnExit3.setBounds(815, 500, 105, 47);
+            btnExit3.setBounds(895, 485, 105, 47);
 
             //---- btnMainScreen ----
             btnMainScreen.setText("Main Screen");
@@ -429,7 +440,7 @@ class Tester extends JFrame {
                 }
             });
             computerPanel.add(btnMainScreen);
-            btnMainScreen.setBounds(710, 500, btnMainScreen.getPreferredSize().width, 47);
+            btnMainScreen.setBounds(780, 485, btnMainScreen.getPreferredSize().width, 47);
 
             //---- label14 ----
             label14.setText("T");
@@ -444,6 +455,15 @@ class Tester extends JFrame {
             clockCycle.setFont(new Font(".SF NS Text", Font.PLAIN, 45));
             computerPanel.add(clockCycle);
             clockCycle.setBounds(90, 475, 45, clockCycle.getPreferredSize().height);
+            computerPanel.add(labelTableAddrTxtPn);
+            labelTableAddrTxtPn.setBounds(1010, 50, 30, 265);
+            computerPanel.add(labelTableTxtPn);
+            labelTableTxtPn.setBounds(1045, 50, 130, 265);
+
+            //---- label15 ----
+            label15.setText("Label Table");
+            computerPanel.add(label15);
+            label15.setBounds(new Rectangle(new Point(1030, 25), label15.getPreferredSize()));
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -460,7 +480,7 @@ class Tester extends JFrame {
             }
         }
         contentPane.add(computerPanel);
-        computerPanel.setBounds(0, -15, 1025, 570);
+        computerPanel.setBounds(0, -15, 1210, 570);
 
         //======== compilePanel ========
         {
@@ -634,6 +654,9 @@ class Tester extends JFrame {
     private JButton btnMainScreen;
     private JLabel label14;
     protected JTextField clockCycle;
+    protected JTextPane labelTableAddrTxtPn;
+    protected JTextPane labelTableTxtPn;
+    private JLabel label15;
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;
