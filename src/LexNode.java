@@ -42,10 +42,15 @@ public class LexNode {
 
     public String getLine() {
         StringBuilder sb = new StringBuilder();
-
-        for (String lex : lexes) {
-            sb.append(lex);
-            sb.append(' ');
+        int i = 0;
+        if (lexes[0].charAt(lexes[0].length() - 1) == ':') {
+            sb.append(lexes[0]);
+            i++;
+        }
+        sb.append("\t");
+        for (; i < lexes.length; i++) {
+            sb.append(lexes[i]);
+            sb.append("  ");
         }
         sb.append('\n');
         return sb.toString();

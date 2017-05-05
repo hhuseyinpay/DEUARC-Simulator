@@ -279,12 +279,13 @@ new FormModel {
 					"x": 625
 					"y": 430
 					"height": 47
+					"width": 125
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button1"
 					"text": "Instruction Run"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 715
+					"x": 745
 					"y": 430
 					"height": 47
 				} )
@@ -292,17 +293,28 @@ new FormModel {
 					name: "button2"
 					"text": "Run Over"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 845
+					"x": 865
 					"y": 430
 					"height": 47
+					"width": 125
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "btnExit3"
 					"text": "Exit"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnExit3MouseClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 960
-					"y": 430
+					"x": 815
+					"y": 500
+					"height": 47
+					"width": 105
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "btnMainScreen"
+					"text": "Main Screen"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "btnMainScreenMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 710
+					"y": 500
 					"height": 47
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
@@ -333,7 +345,7 @@ new FormModel {
 				"x": 0
 				"y": -15
 				"height": 570
-				"width": 1020
+				"width": 1025
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 				name: "compilePanel"
@@ -369,7 +381,7 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"width": 100
 					"height": 34
-					"x": 700
+					"x": 820
 					"y": 260
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -385,9 +397,22 @@ new FormModel {
 					"height": 34
 					"width": 100
 				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "bntBack"
+					"text": "Back"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "bntBackMouseClicked", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 705
+					"y": 260
+					"width": 100
+					"height": 34
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"width": 860
-				"x": 85
+				"width": 965
+				"x": 30
 				"y": 0
 				"height": 535
 			} )

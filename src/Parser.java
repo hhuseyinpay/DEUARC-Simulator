@@ -7,6 +7,9 @@ import java.util.LinkedList;
 class Parser {
 
     public LinkedList<LexNode> parse(String content) {
+        if (content == null) {
+            return null;
+        }
         String[] lines = content.split("\n");
         String[] lex;
         String[] comment;
@@ -32,7 +35,7 @@ class Parser {
                     lexList.add(new LexNode(lex, true));
                     continue;
                 }
-                lexList.add(new LexNode(lex[0],new String[]{lex[2],lex[3]}, false));
+                lexList.add(new LexNode(lex[0], new String[]{lex[2], lex[3]}, false));
                 continue;
             }
 
@@ -52,7 +55,7 @@ class Parser {
                 String[] parameter = lex[1].split(",");
                 len = parameter.length;
 
-                if (len < 2 || len > 3|| parameter[0].equals("") || parameter[len - 1].equals("")) {
+                if (len < 2 || len > 3 || parameter[0].equals("") || parameter[len - 1].equals("")) {
                     lexList.add(new LexNode(lex, true));
                     continue;
                 }
