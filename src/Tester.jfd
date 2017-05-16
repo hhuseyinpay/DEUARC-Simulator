@@ -183,7 +183,7 @@ new FormModel {
 					name: "label11"
 					"text": "Instruction Memory"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 450
+					"x": 380
 					"y": 25
 					"width": 140
 				} )
@@ -198,7 +198,7 @@ new FormModel {
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"width": 151
-					"x": 455
+					"x": 385
 					"y": 50
 					"height": 520
 				} )
@@ -207,7 +207,7 @@ new FormModel {
 					"rows": 32
 					"editable": false
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 420
+					"x": 350
 					"y": 50
 					"width": 30
 					"height": 520
@@ -216,7 +216,7 @@ new FormModel {
 					name: "label12"
 					"text": "Data Memory"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 685
+					"x": 575
 					"y": 25
 				} )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
@@ -226,7 +226,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 710
+					"x": 595
 					"y": 50
 					"height": 265
 					"width": 65
@@ -238,7 +238,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 675
+					"x": 560
 					"y": 50
 					"width": 30
 					"height": 265
@@ -247,7 +247,7 @@ new FormModel {
 					name: "label13"
 					"text": "Stack Memory"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 860
+					"x": 705
 					"y": 25
 				} )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
@@ -256,7 +256,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 850
+					"x": 690
 					"y": 50
 					"height": 265
 					"width": 30
@@ -267,7 +267,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 885
+					"x": 725
 					"y": 50
 					"height": 265
 					"width": 80
@@ -322,8 +322,8 @@ new FormModel {
 					"text": "T"
 					"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 20, false )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 55
-					"y": 485
+					"x": 95
+					"y": 445
 					"width": 40
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
@@ -337,8 +337,8 @@ new FormModel {
 						"JavaCodeGenerator.variableName": "clockCycle"
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 90
-					"y": 475
+					"x": 130
+					"y": 435
 					"width": 45
 				} )
 				add( new FormComponent( "javax.swing.JTextPane" ) {
@@ -347,7 +347,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 1010
+					"x": 830
 					"y": 50
 					"width": 30
 					"height": 265
@@ -358,7 +358,7 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 4
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 1045
+					"x": 865
 					"y": 50
 					"width": 130
 					"height": 265
@@ -367,8 +367,31 @@ new FormModel {
 					name: "label15"
 					"text": "Label Table"
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 1030
+					"x": 875
 					"y": 25
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "textArea1"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 1060
+					"y": 50
+					"width": 100
+					"height": 265
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label16"
+					"text": "Micro Instructions"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 1050
+					"y": 25
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "textArea2"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 1025
+					"y": 50
+					"width": 30
+					"height": 265
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 0

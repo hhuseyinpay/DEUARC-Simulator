@@ -231,6 +231,9 @@ class Tester extends JFrame {
         labelTableAddrTxtPn = new JTextPane();
         labelTableTxtPn = new JTextPane();
         label15 = new JLabel();
+        textArea1 = new JTextArea();
+        label16 = new JLabel();
+        textArea2 = new JTextArea();
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
@@ -366,44 +369,44 @@ class Tester extends JFrame {
             //---- label11 ----
             label11.setText("Instruction Memory");
             computerPanel.add(label11);
-            label11.setBounds(450, 25, 140, label11.getPreferredSize().height);
+            label11.setBounds(380, 25, 140, label11.getPreferredSize().height);
 
             //---- instructionMemoryTxtAr ----
             instructionMemoryTxtAr.setRows(32);
             instructionMemoryTxtAr.setTabSize(11);
             instructionMemoryTxtAr.setEditable(false);
             computerPanel.add(instructionMemoryTxtAr);
-            instructionMemoryTxtAr.setBounds(455, 50, 151, 520);
+            instructionMemoryTxtAr.setBounds(385, 50, 151, 520);
 
             //---- instMemAddressTxtAr ----
             instMemAddressTxtAr.setRows(32);
             instMemAddressTxtAr.setEditable(false);
             computerPanel.add(instMemAddressTxtAr);
-            instMemAddressTxtAr.setBounds(420, 50, 30, 520);
+            instMemAddressTxtAr.setBounds(350, 50, 30, 520);
 
             //---- label12 ----
             label12.setText("Data Memory");
             computerPanel.add(label12);
-            label12.setBounds(new Rectangle(new Point(685, 25), label12.getPreferredSize()));
+            label12.setBounds(new Rectangle(new Point(575, 25), label12.getPreferredSize()));
 
             //---- dataMemoryTxtAr ----
             dataMemoryTxtAr.setEditable(false);
             computerPanel.add(dataMemoryTxtAr);
-            dataMemoryTxtAr.setBounds(710, 50, 65, 265);
+            dataMemoryTxtAr.setBounds(595, 50, 65, 265);
 
             //---- dataMemAddressTxtAr ----
             dataMemAddressTxtAr.setEditable(false);
             computerPanel.add(dataMemAddressTxtAr);
-            dataMemAddressTxtAr.setBounds(675, 50, 30, 265);
+            dataMemAddressTxtAr.setBounds(560, 50, 30, 265);
 
             //---- label13 ----
             label13.setText("Stack Memory");
             computerPanel.add(label13);
-            label13.setBounds(new Rectangle(new Point(860, 25), label13.getPreferredSize()));
+            label13.setBounds(new Rectangle(new Point(705, 25), label13.getPreferredSize()));
             computerPanel.add(stackMemAddressTxtAr);
-            stackMemAddressTxtAr.setBounds(850, 50, 30, 265);
+            stackMemAddressTxtAr.setBounds(690, 50, 30, 265);
             computerPanel.add(stackMemoryTxtAr);
-            stackMemoryTxtAr.setBounds(885, 50, 80, 265);
+            stackMemoryTxtAr.setBounds(725, 50, 80, 265);
 
             //---- stepRun ----
             stepRun.setText("Step Run");
@@ -446,7 +449,7 @@ class Tester extends JFrame {
             label14.setText("T");
             label14.setFont(label14.getFont().deriveFont(label14.getFont().getSize() + 20f));
             computerPanel.add(label14);
-            label14.setBounds(55, 485, 40, label14.getPreferredSize().height);
+            label14.setBounds(95, 445, 40, label14.getPreferredSize().height);
 
             //---- clockCycle ----
             clockCycle.setText("0");
@@ -454,16 +457,25 @@ class Tester extends JFrame {
             clockCycle.setEditable(false);
             clockCycle.setFont(new Font(".SF NS Text", Font.PLAIN, 45));
             computerPanel.add(clockCycle);
-            clockCycle.setBounds(90, 475, 45, clockCycle.getPreferredSize().height);
+            clockCycle.setBounds(130, 435, 45, clockCycle.getPreferredSize().height);
             computerPanel.add(labelTableAddrTxtPn);
-            labelTableAddrTxtPn.setBounds(1010, 50, 30, 265);
+            labelTableAddrTxtPn.setBounds(830, 50, 30, 265);
             computerPanel.add(labelTableTxtPn);
-            labelTableTxtPn.setBounds(1045, 50, 130, 265);
+            labelTableTxtPn.setBounds(865, 50, 130, 265);
 
             //---- label15 ----
             label15.setText("Label Table");
             computerPanel.add(label15);
-            label15.setBounds(new Rectangle(new Point(1030, 25), label15.getPreferredSize()));
+            label15.setBounds(new Rectangle(new Point(875, 25), label15.getPreferredSize()));
+            computerPanel.add(textArea1);
+            textArea1.setBounds(1060, 50, 100, 265);
+
+            //---- label16 ----
+            label16.setText("Micro Instructions");
+            computerPanel.add(label16);
+            label16.setBounds(new Rectangle(new Point(1050, 25), label16.getPreferredSize()));
+            computerPanel.add(textArea2);
+            textArea2.setBounds(1025, 50, 30, 265);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -657,6 +669,9 @@ class Tester extends JFrame {
     protected JTextPane labelTableAddrTxtPn;
     protected JTextPane labelTableTxtPn;
     private JLabel label15;
+    private JTextArea textArea1;
+    private JLabel label16;
+    private JTextArea textArea2;
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;
