@@ -231,9 +231,9 @@ class Tester extends JFrame {
         labelTableAddrTxtPn = new JTextPane();
         labelTableTxtPn = new JTextPane();
         label15 = new JLabel();
-        textArea1 = new JTextArea();
+        microInstructionsTxtAr = new JTextArea();
+        micInstAddressTxtAr = new JTextArea();
         label16 = new JLabel();
-        textArea2 = new JTextArea();
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
@@ -467,15 +467,15 @@ class Tester extends JFrame {
             label15.setText("Label Table");
             computerPanel.add(label15);
             label15.setBounds(new Rectangle(new Point(875, 25), label15.getPreferredSize()));
-            computerPanel.add(textArea1);
-            textArea1.setBounds(1060, 50, 100, 265);
+            computerPanel.add(microInstructionsTxtAr);
+            microInstructionsTxtAr.setBounds(1060, 50, 100, 265);
+            computerPanel.add(micInstAddressTxtAr);
+            micInstAddressTxtAr.setBounds(1025, 50, 30, 265);
 
             //---- label16 ----
             label16.setText("Micro Instructions");
             computerPanel.add(label16);
             label16.setBounds(new Rectangle(new Point(1050, 25), label16.getPreferredSize()));
-            computerPanel.add(textArea2);
-            textArea2.setBounds(1025, 50, 30, 265);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -669,9 +669,9 @@ class Tester extends JFrame {
     protected JTextPane labelTableAddrTxtPn;
     protected JTextPane labelTableTxtPn;
     private JLabel label15;
-    private JTextArea textArea1;
+    protected JTextArea microInstructionsTxtAr;
+    protected JTextArea micInstAddressTxtAr;
     private JLabel label16;
-    private JTextArea textArea2;
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;

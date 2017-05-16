@@ -19,7 +19,7 @@ class FileOperation {
     }
 
     public String readFile(String path) {
-        InputStream is = null;
+        InputStream is;
         BufferedReader buf;
         StringBuilder sb = new StringBuilder();
         try {

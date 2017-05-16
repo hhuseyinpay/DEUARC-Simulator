@@ -194,7 +194,6 @@ new FormModel {
 					"editable": false
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 4
-						"JavaCodeGenerator.variableName": "instructionMemoryTxtAr"
 					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"width": 151
@@ -371,11 +370,26 @@ new FormModel {
 					"y": 25
 				} )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "textArea1"
+					name: "microInstructionsTxtAr"
+					auxiliary() {
+						"JavaCodeGenerator.variableName": "microInstructionsTxtAr"
+						"JavaCodeGenerator.variableModifiers": 4
+					}
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 1060
 					"y": 50
 					"width": 100
+					"height": 265
+				} )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "micInstAddressTxtAr"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 1025
+					"y": 50
+					"width": 30
 					"height": 265
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
@@ -384,14 +398,6 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 1050
 					"y": 25
-				} )
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "textArea2"
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 1025
-					"y": 50
-					"width": 30
-					"height": 265
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 0
