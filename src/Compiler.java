@@ -245,7 +245,7 @@ public class Compiler {
     }
 
     private boolean dataController(LinkedList<LexNode> lexList) {
-        LexNode lexem = null;
+        LexNode lexem;
         String[] lex;
         int size = lexList.size();
         int i;
@@ -257,13 +257,13 @@ public class Compiler {
             if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("D")) {
                 dataPointer = stringToInt(lex[2]);
                 if (dataPointer < 0 || dataPointer > 15) {
-                    return true;
+                    return true; // dataPointer yanlis yeri gosteriyorsa, hata vardir
                 }
                 break;
             }
         }
 
-        if (i == size - 1)
+        if (i == size - 1) // son elemana geldiyse
             return true;
 
         i += 1;// bir sonraki label'ı almak için
@@ -295,6 +295,7 @@ public class Compiler {
                      */
                     tmp = toBinary(dataPointer, 4);
                     labelTable.put(lex[0].substring(0, lex[0].length() - 1), tmp); // labelTable doldu
+
                     labelTableKeys[labelPointer] = lex[0].substring(0, lex[0].length() - 1);
                     labelAdress[labelPointer] = dataPointer;
                     labelPointer++;
