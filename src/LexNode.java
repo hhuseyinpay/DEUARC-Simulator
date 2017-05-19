@@ -27,6 +27,9 @@ public class LexNode {
         this.isWrong = isWrong;
     }
 
+
+
+
     public String[] getLexes() {
         return lexes;
     }

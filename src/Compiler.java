@@ -12,19 +12,15 @@ public class Compiler {
     private Map<String, String> instructions;
     private Map<String, String> registers;
     private Map<String, String> labelTable;
+    private String[][] subLabelTable;
     private String[] labelTableKeys;
     private int[] labelAdress;
     private int labelPointer;
 
     public Compiler() {
-        instsTable = new String[32];
-        dataTable = new String[16];
-        instructions = new HashMap<String, String>();
-        registers = new HashMap<String, String>();
-        labelTable = new HashMap<String, String>();
-        labelTableKeys = new String[16];
-        labelPointer = 0;
-        labelAdress = new int[16];
+        instructions = new HashMap<>();
+        registers = new HashMap<>();
+
 
         instructions.put("HLT", "1000");
         instructions.put("ADD", "0000");
@@ -49,14 +45,30 @@ public class Compiler {
     }
 
     public String[] compile(LinkedList<LexNode> lexList) {
+        instsTable = new String[32];
+        dataTable = new String[16];
+
+        labelTable = new HashMap<>();
+        subLabelTable = new String[8][2];
+
+        labelTableKeys = new String[16];
+        labelPointer = 0;
+        labelAdress = new int[16];
+
+
+
+
+
+
+
         String[] lex;
-        int instPointer = 0;
+        int instPointer;
         String binaryParameter;
         if (dataController(lexList)) // fill the data and label tables, if error occurs return null
             return null;
 
         lex = lexList.getFirst().getLexes();
-        if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("I")) {
+        if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("C")) {
             int number = stringToInt(lex[2]);
 
             if (number < 0 || number > 31) {
@@ -80,7 +92,6 @@ public class Compiler {
             if (lex.length == 1 && lex[0].equals("HLT")) {
 
                 instsTable[instPointer] = "0" + instructions.get("HLT") + "000000";
-                break;
 
             } else if (lex.length == 4 && lex[0].equals("ADD")) { // BURASI ÇOK SAÇMA, SOR !!!
                 if (registers.containsKey(lex[1]) && registers.containsKey(lex[2]) && registers.containsKey(lex[3]))
@@ -107,7 +118,7 @@ public class Compiler {
                             + registers.get(lex[2]) + "00";
                 else
                     return null;
-            } else if (lex.length == 3 && lex[0].equals("NOT")) {
+            } else if (lex[0].equals("NOT")) {
                 if (registers.containsKey(lex[1]) && registers.containsKey(lex[2]))
                     instsTable[instPointer] = "0" + instructions.get("NOT") + registers.get(lex[1])
                             + registers.get(lex[2]) + "00";
@@ -138,7 +149,7 @@ public class Compiler {
                     }
                 }
 
-            } else if (lex.length == 3 && lex[0].equals("ST")) {
+            } else if (lex[0].equals("ST")) {
                 if (registers.containsKey(lex[1])) { // register varmı yokmu diye kontrol
 
                     if (lex[2].charAt(0) == '@') {
@@ -170,20 +181,28 @@ public class Compiler {
                 } else return null;
 
             } else if (lex.length == 2 && lex[0].equals("CAL")) {
-                int number = stringToInt(lex[1]);
-                if (number < 0 || number > 63)
-                    return null;
+                // lex[1] subLabelTable'da var mı yok mu kontrolu. Varsa o adresi alacagız
+                boolean flag = false;
+                int j;
+                for (j = 0; j < 8; j++) {
+                    if (lex[1].equals(subLabelTable[j][0])) {
+                        flag = true;
+                        break;
+                    }
+                }
+                String tmp;
+                if (flag) {
+                    tmp = subLabelTable[j][1];
+                } else {
 
-                String tmp = toBinary(number, 5);
-                instsTable[instPointer] = "0" + instructions.get("CALL") + "000" + tmp; // başdaki 1 tane ve ortadaki 3 tane dont care
+                    int number = stringToInt(lex[1]);
+                    tmp = toBinary(number, 5);
+                }
 
-            } else if (lex.length == 2 && lex[0].equals("RET")) {
-                int number = stringToInt(lex[1]);
-                if (number < 0 || number > 63)
-                    return null;
+                instsTable[instPointer] = "0" + instructions.get("CAL") + "0" + tmp; // başdaki 1 tane ve ortadaki 3 tane dont care
 
-                String tmp = toBinary(number, 5);
-                instsTable[instPointer] = "0" + instructions.get("RET") + "0" + tmp; // başdaki 1 tane ve ortadaki 3 tane dont care
+            } else if (lex[0].equals("RET")) {
+                instsTable[instPointer] = "0" + instructions.get("RET") + "000000"; // başdaki 1 tane ve son taraf dont care
 
             } else if (lex.length == 2 && lex[0].equals("JMP")) {
                 int number = stringToInt(lex[1]);
@@ -220,7 +239,10 @@ public class Compiler {
                 String tmp = toBinary(number, 5);
                 instsTable[instPointer] = "0" + instructions.get("POP") + "0" + tmp; // başdaki 1 tane ve ortadaki 3 tane dont care
 
-            } else {
+            } else if(lex[0].equals("ORG") || lex[0].equals("END")){
+                break;
+            }
+            else {
                 return null;
             }
 
@@ -237,8 +259,13 @@ public class Compiler {
         for (int i = 32; i < 48; i++) {
             tmp[i] = dataTable[i - 32];
         }
-        for (int i = 48; i < 64; i++) {
-            tmp[i] = labelTableKeys[i - 48] + "    " + labelAdress[i - 48] + "    " + (labelAdress[i - 48] != 0? dataTable[labelAdress[i - 48]]:null) + "\n"; // GEÇİCİ AT KAFASI ÇÖZÜMÜ
+
+        for (int i = 48; i < 56; i++) {
+            tmp[i] = labelTableKeys[i - 48] + "    " + toBinary(labelAdress[i - 48], 4) + "    " + (labelAdress[i - 48] != 0 ? dataTable[labelAdress[i - 48]] : null) + "\n"; // GEÇİCİ AT KAFASI ÇÖZÜMÜ
+        }
+
+        for (int i = 56; i < 64; i++) {
+            tmp[i] = subLabelTable[i - 56][0] + "    " + subLabelTable[i - 56][1] + "\n";
         }
 
         return tmp;
@@ -250,11 +277,14 @@ public class Compiler {
         int size = lexList.size();
         int i;
         int dataPointer = 0;
+        int instPointer = 0;
         // ORG D yi bulasıya kadar devam edilecek
         for (i = 0; i < size; i++) {
             lexem = lexList.get(i);
             lex = lexem.getLexes();
-            if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("D")) {
+            if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("C")) {
+                instPointer = stringToInt(lex[2]);
+            } else if (lex.length == 3 && lex[0].equals("ORG") && lex[1].equals("D")) {
                 dataPointer = stringToInt(lex[2]);
                 if (dataPointer < 0 || dataPointer > 15) {
                     return true; // dataPointer yanlis yeri gosteriyorsa, hata vardir
@@ -266,9 +296,28 @@ public class Compiler {
         if (i == size - 1) // son elemana geldiyse
             return true;
 
+        int count = 0;
+        for (int j = 0; j < i; j++) { // ORG D'ye kadar devam et
+            lexem = lexList.get(j);
+            lex = lexem.getLexes();
+            if (lex[0].charAt(lex[0].length() - 1) == ':') {
+                subLabelTable[count][0] = lex[0].substring(0, lex[0].length() - 1);
+                subLabelTable[count][1] = toBinary(instPointer + j, 5);
+                count++;
+
+                int len = lex.length;
+                String[] tmp = new String[len - 1];
+                for (int k = 1; k < len; k++) {
+                    tmp[k - 1] = lex[k];
+                }
+                lexList.remove(j);
+                lexList.add(j, new LexNode(tmp, false));
+            }
+        }
+
+
         i += 1;// bir sonraki label'ı almak için
 
-        String binary;
         for (int j = i; j < size; j++) {
             lexem = lexList.get(j);
             lex = lexem.getLexes();
@@ -309,6 +358,18 @@ public class Compiler {
                     String tmp = toBinary(number, 4);
                     dataTable[dataPointer] = tmp;
                     tmp = toBinary(dataPointer, 4);
+                    labelTable.put(lex[0].substring(0, lex[0].length() - 1), tmp); // labelTable doldu
+                    labelTableKeys[labelPointer] = lex[0].substring(0, lex[0].length() - 1);
+                    labelAdress[labelPointer] = dataPointer;
+                    labelPointer++;
+                    dataPointer++;
+
+                } else if (lex[1].equals("BIN")) {
+                    String tmp = lex[2];
+                    dataTable[dataPointer] = tmp;
+
+                    tmp = toBinary(dataPointer, 4);
+
                     labelTable.put(lex[0].substring(0, lex[0].length() - 1), tmp); // labelTable doldu
                     labelTableKeys[labelPointer] = lex[0].substring(0, lex[0].length() - 1);
                     labelAdress[labelPointer] = dataPointer;

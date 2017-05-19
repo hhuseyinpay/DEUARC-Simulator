@@ -1,3 +1,5 @@
+import com.sun.tools.javac.util.ArrayUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -24,18 +26,32 @@ class Parser {
                 continue;
             }
 
-            lex = comment[0].trim().split(" ");
+            lex = comment[0].trim().split("\\s+");
             int len = lex.length;
 
             if (len < 1)
                 continue;
 
             if (lex[0].charAt(lex[0].length() - 1) == ':') {
-                if (len != 4) {
-                    lexList.add(new LexNode(lex, true));
+
+                if (len > 1 && lex[2].contains(",")) {
+                    String[] parameter = lex[2].split(",");
+                    len = parameter.length;
+
+                    if (len < 2 || len > 3 || parameter[0].equals("") || parameter[len - 1].equals("")) {
+                        lexList.add(new LexNode(lex, true));
+                        continue;
+                    }
+                    String[] tmp = new String[2 + parameter.length];
+                    tmp[0] = lex[0];
+                    tmp[1] = lex[1];
+                    for (int i = 2; i < parameter.length + 2; i++) {
+                        tmp[i] = parameter[i - 2];
+                    }
+                    lexList.add(new LexNode(tmp, false));
                     continue;
                 }
-                lexList.add(new LexNode(lex[0], new String[]{lex[2], lex[3]}, false));
+                lexList.add(new LexNode(lex[0], new String[]{lex[1], lex[2]}, false));
                 continue;
             }
 

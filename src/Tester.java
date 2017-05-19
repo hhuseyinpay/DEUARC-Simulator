@@ -3,10 +3,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.LinkedList;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 /*
  * Created by JFormDesigner on Sun Apr 30 12:07:32 EEST 2017
  */
@@ -128,8 +125,9 @@ class Tester extends JFrame {
     }
 
     private void btnCompileMouseClicked(MouseEvent e) {
+        String[] inst;
         if (parseOK) {
-            String[] inst = c.compile(ll);
+            inst = c.compile(ll);
             if (inst == null) {
                 codePane.setBackground(Color.red);
                 JOptionPane.showMessageDialog(null, "Compile error!");
@@ -154,20 +152,32 @@ class Tester extends JFrame {
     }
 
     private void compileInit(String[] inst) {
+
+        instMemAddressTxtAr.setText(null);
+        instructionMemoryTxtAr.setText(null);
         for (int i = 0; i < 32; i++) {
             instMemAddressTxtAr.append(i + "\n");
             instructionMemoryTxtAr.append(inst[i] + "\n");
         }
+
+        micInstAddressTxtAr.setText(null);
+        stackMemAddressTxtAr.setText(null);
+        dataMemAddressTxtAr.setText(null);
+        dataMemoryTxtAr.setText(null);
         for (int i = 32; i < 48; i++) {
-            stackMemAddressTxtAr.append(i - 32 + "\n");
             // stack memory dinamik olacak, computer dolduracak !
+            stackMemAddressTxtAr.append(i - 32 + "\n");
+
+            micInstAddressTxtAr.append(i - 32 + "\n");
 
             dataMemAddressTxtAr.append(i - 32 + "\n");
             dataMemoryTxtAr.append(inst[i] + "\n");
         }
-        doc = labelTableTxtPn.getStyledDocument();
-        for (int i = 48; i < 64; i++) {
 
+
+        doc = labelTableTxtPn.getStyledDocument();
+        labelTableTxtPn.setText("");
+        for (int i = 48; i < 64; i++) {
             try {
                 doc.insertString(doc.getLength(), inst[i], style);
             } catch (BadLocationException e) {
@@ -254,10 +264,15 @@ class Tester extends JFrame {
 
             // JFormDesigner evaluation mark
             computerPanel.setBorder(new javax.swing.border.CompoundBorder(
-                new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-                    "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-                    javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                    java.awt.Color.red), computerPanel.getBorder())); computerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
+                    new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+                            "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+                            javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+                            java.awt.Color.red), computerPanel.getBorder()));
+            computerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+                public void propertyChange(java.beans.PropertyChangeEvent e) {
+                    if ("border".equals(e.getPropertyName())) throw new RuntimeException();
+                }
+            });
 
             computerPanel.setLayout(null);
 
@@ -479,7 +494,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < computerPanel.getComponentCount(); i++) {
+                for (int i = 0; i < computerPanel.getComponentCount(); i++) {
                     Rectangle bounds = computerPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -552,7 +567,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < compilePanel.getComponentCount(); i++) {
+                for (int i = 0; i < compilePanel.getComponentCount(); i++) {
                     Rectangle bounds = compilePanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -595,7 +610,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < loginPanel.getComponentCount(); i++) {
+                for (int i = 0; i < loginPanel.getComponentCount(); i++) {
                     Rectangle bounds = loginPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -612,7 +627,7 @@ class Tester extends JFrame {
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
-            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+            for (int i = 0; i < contentPane.getComponentCount(); i++) {
                 Rectangle bounds = contentPane.getComponent(i).getBounds();
                 preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                 preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
