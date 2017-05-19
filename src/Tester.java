@@ -1,3 +1,5 @@
+import Computer.Computer;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -22,6 +24,9 @@ class Tester extends JFrame {
     private boolean parseOK = false;
     private StyledDocument doc;
     private Style style;
+    private Computer computer;
+
+
 
     public Tester() {
         initComponents();
