@@ -8,17 +8,17 @@ import Computer.Memory.Stack;
  * Created by asuss on 19.05.2017.
  */
 public class CPU {
-    ALU alu;
-    ControlUnit controlUnit;
-    StackPointer SP;
-    ProgramCounter PC;
-    Register R0;
-    Register R1;
-    Register R2;
-    Register AR;
-    Register inpr;
-    Register outr;
-    Register IR;
+    public ALU alu;
+    public ControlUnit controlUnit;
+    public StackPointer SP;
+    public ProgramCounter PC;
+    public Register R0;
+    public Register R1;
+    public Register R2;
+    public Register AR;
+    public Register inpr;
+    public Register outr;
+    public Register IR;
 
     public CPU() {
         alu=new ALU();

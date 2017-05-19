@@ -12,7 +12,7 @@ public class Computer {
     Instruction instMem;
     Stack stackMem;
     Data dataMem;
-    CPU cpu;
+    public CPU cpu;
 
     public Computer(String[] instMem,String[] datamem) {
         this.instMem = new Instruction(32);

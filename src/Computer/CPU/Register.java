@@ -8,7 +8,7 @@ import Computer.Computer;
 public class Register {
 
     int size;
-    String data;
+    public String data;
     boolean load;//???
 
     public Register(int size) {

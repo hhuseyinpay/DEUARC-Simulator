@@ -1,4 +1,4 @@
-import Computer.Computer;
+import Computer.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -216,11 +216,44 @@ class Tester extends JFrame {
         mainScreenProcedure();
     }
 
+    private void stepRunMouseClicked(MouseEvent e) {
+
+        if(computer.cpu.controlUnit.T==0){
+            microInstructionsTxtAr.append("T0 : IR <- IM[PC]"+"\n");
+        }
+        else if(computer.cpu.controlUnit.T==1){
+            microInstructionsTxtAr.append("T1 : PC <- PC + 1"+"\n");
+        }
+        else if(computer.cpu.controlUnit.T==2){
+            microInstructionsTxtAr.append("T2 : D0..D15 <- IR[9..6], Q <- IR[10], S2 <- IR[1..0], S1 <- IR[3..2], D <- IR[5..4]"+"\n");
+        }
+
+        clockCycle.setText(Integer.toString(computer.cpu.controlUnit.T));
+
+        computer.stepRun();
+
+        instructionRegisterTxtfl.setText(computer.cpu.IR.data);
+        addressRegisterTxtfl.setText(computer.cpu.AR.data);
+        programCounterTxtfl.setText(Integer.toString(computer.cpu.PC.getData()));
+        stackPointerTxtfl.setText(computer.cpu.SP.data);
+        inputRegisterTxtfl.setText(computer.cpu.inpr.data);
+        outputRegisterTxtfl.setText(computer.cpu.outr.data);
+        register0Txtfl.setText(computer.cpu.R0.data);
+        register1Txtfl.setText(computer.cpu.R1.data);
+        register2Txtfl.setText(computer.cpu.R2.data);
+
+
+
+
+
+
+    }
+
 
     // END OF COMPUTER PANEL
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - hasan pay
+        // Generated using JFormDesigner Evaluation license - Mazlum asdasf
         computerPanel = new JPanel();
         label1 = new JLabel();
         label2 = new JLabel();
@@ -283,15 +316,10 @@ class Tester extends JFrame {
 
             // JFormDesigner evaluation mark
             computerPanel.setBorder(new javax.swing.border.CompoundBorder(
-                    new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-                            "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-                            javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                            java.awt.Color.red), computerPanel.getBorder()));
-            computerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-                public void propertyChange(java.beans.PropertyChangeEvent e) {
-                    if ("border".equals(e.getPropertyName())) throw new RuntimeException();
-                }
-            });
+                new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+                    "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+                    javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+                    java.awt.Color.red), computerPanel.getBorder())); computerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
 
             computerPanel.setLayout(null);
 
@@ -444,6 +472,13 @@ class Tester extends JFrame {
 
             //---- stepRun ----
             stepRun.setText("Step Run");
+            stepRun.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    stepRunMouseClicked(e);
+                    stepRunMouseClicked(e);
+                }
+            });
             computerPanel.add(stepRun);
             stepRun.setBounds(695, 415, 125, 47);
 
@@ -513,7 +548,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for (int i = 0; i < computerPanel.getComponentCount(); i++) {
+                for(int i = 0; i < computerPanel.getComponentCount(); i++) {
                     Rectangle bounds = computerPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -586,7 +621,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for (int i = 0; i < compilePanel.getComponentCount(); i++) {
+                for(int i = 0; i < compilePanel.getComponentCount(); i++) {
                     Rectangle bounds = compilePanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -629,7 +664,7 @@ class Tester extends JFrame {
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for (int i = 0; i < loginPanel.getComponentCount(); i++) {
+                for(int i = 0; i < loginPanel.getComponentCount(); i++) {
                     Rectangle bounds = loginPanel.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -646,7 +681,7 @@ class Tester extends JFrame {
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
-            for (int i = 0; i < contentPane.getComponentCount(); i++) {
+            for(int i = 0; i < contentPane.getComponentCount(); i++) {
                 Rectangle bounds = contentPane.getComponent(i).getBounds();
                 preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                 preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -663,7 +698,7 @@ class Tester extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - hasan pay
+    // Generated using JFormDesigner Evaluation license - Mazlum asdasf
     protected JPanel computerPanel;
     private JLabel label1;
     private JLabel label2;

@@ -14,7 +14,7 @@ public class ControlUnit {
     int S1;//Source address(register)
     int S2;//Source address(register)
     int Dest;//Destination address(register)
-    int T;//Sequence Counter
+    public int T;//Sequence Counter
     public void fetch(Register IR, ProgramCounter PC, Instruction IM){
 
         if(T==0)

@@ -274,6 +274,8 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "stepRun"
 					"text": "Step Run"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stepRunMouseClicked", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stepRunMouseClicked", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 695
 					"y": 415
