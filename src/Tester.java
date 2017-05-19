@@ -144,6 +144,20 @@ class Tester extends JFrame {
                 compilePanel.setVisible(false);
                 computerPanel.setVisible(true);
                 parseOK = false;
+
+                String[] tmpInst = new String[32];
+                String[] tmpData = new String[16];
+
+                for (int i = 0; i < 32; i++) {
+                    tmpInst[i]=inst[i];
+                }
+
+                for (int i = 32; i <48 ; i++) {
+                    tmpData[i-32]=inst[i];
+                }
+
+                computer = new Computer(tmpInst,tmpData);
+
             }
         }
     }
