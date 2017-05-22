@@ -31,8 +31,8 @@ public class Computer {
 
     }
 
-    public void stepRun(){//runs clock by clock
-        cpu.run(dataMem,instMem,stackMem);
+    public String stepRun(){//runs clock by clock
+        return cpu.run(dataMem,instMem,stackMem);
     }
 
     public void instructionRun(){//runs instruction by instruction

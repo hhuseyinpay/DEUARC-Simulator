@@ -230,7 +230,10 @@ class Tester extends JFrame {
 
         clockCycle.setText(Integer.toString(computer.cpu.controlUnit.T));
 
-        computer.stepRun();
+        String temp = computer.stepRun();
+        if(temp!=null){
+            InstPartxt.setText(temp);
+        }
 
         instructionRegisterTxtfl.setText(computer.cpu.IR.data);
         addressRegisterTxtfl.setText(computer.cpu.AR.data);
@@ -296,6 +299,8 @@ class Tester extends JFrame {
         microInstructionsTxtAr = new JTextArea();
         micInstAddressTxtAr = new JTextArea();
         label16 = new JLabel();
+        scrollPane2 = new JScrollPane();
+        InstPartxt = new JTextArea();
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
@@ -476,7 +481,7 @@ class Tester extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     stepRunMouseClicked(e);
-
+                   // stepRunMouseClicked(e);
                 }
             });
             computerPanel.add(stepRun);
@@ -545,6 +550,13 @@ class Tester extends JFrame {
             label16.setText("Micro Instructions");
             computerPanel.add(label16);
             label16.setBounds(new Rectangle(new Point(1050, 25), label16.getPreferredSize()));
+
+            //======== scrollPane2 ========
+            {
+                scrollPane2.setViewportView(InstPartxt);
+            }
+            computerPanel.add(scrollPane2);
+            scrollPane2.setBounds(555, 320, 110, 145);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -741,6 +753,8 @@ class Tester extends JFrame {
     protected JTextArea microInstructionsTxtAr;
     protected JTextArea micInstAddressTxtAr;
     private JLabel label16;
+    private JScrollPane scrollPane2;
+    private JTextArea InstPartxt;
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;

@@ -28,7 +28,7 @@ public class ControlUnit {
         T++;
 
     }
-    public void decode(Register IR){
+    public String decode(Register IR){
 
         Q=IR.data.charAt(0);
         D=Integer.parseInt(IR.data.substring(1,5),2);//OPCODE
@@ -36,6 +36,8 @@ public class ControlUnit {
         S1=Integer.parseInt(IR.data.substring(7,9),2);
         S2=Integer.parseInt(IR.data.substring(9,11),2);
         T++;
+        String temp="Opcode : " + D + '\n'+"Destination : "+Dest+'\n'+"S2 : "+S2+'\n'+"S1 : "+ S1 +'\n' ;//GEÇİCİ AT KAFASI
+        return temp;
     }
 
     public void execute(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR){
@@ -44,18 +46,20 @@ public class ControlUnit {
             //call alu.add function
         }
     }
-    public void step(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR,Instruction IM,Register R0,Register R1,Register R2,Register inpr,Register outr){
+    public String step(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR,Instruction IM,Register R0,Register R1,Register R2,Register inpr,Register outr){
         if(T==0 || T==1){
             fetch(IR,PC,IM);
         }
         else if(T==2){
-            decode(IR);
+           return decode(IR);//GEÇİCİ ATTTTTTTTTTTTTTTT
+
         }
         else if(T>2 && T<16){
             execute(DM,AR,SM,SP,PC,IR);
             T=0;
 
         }
+        return null;
     }
     public void load(Register AR,Data DM){
 
