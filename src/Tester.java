@@ -476,7 +476,7 @@ class Tester extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     stepRunMouseClicked(e);
-                    stepRunMouseClicked(e);
+
                 }
             });
             computerPanel.add(stepRun);
