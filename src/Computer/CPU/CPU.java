@@ -38,9 +38,6 @@ public class CPU {
     public String run(Data DM, Instruction IM, Stack SM){
         return controlUnit.step(DM,AR,SM,SP,PC,IR,IM,R0,R1,R2,inpr,outr);
 
-
-
-
     }
 
 

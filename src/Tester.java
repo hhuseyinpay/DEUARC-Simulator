@@ -526,7 +526,7 @@ class Tester extends JFrame {
             label14.setBounds(95, 445, 40, label14.getPreferredSize().height);
 
             //---- clockCycle ----
-            clockCycle.setText("0");
+            clockCycle.setText("-");
             clockCycle.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
             clockCycle.setEditable(false);
             clockCycle.setFont(new Font(".SF NS Text", Font.PLAIN, 45));

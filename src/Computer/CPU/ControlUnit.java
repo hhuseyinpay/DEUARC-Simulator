@@ -9,11 +9,12 @@ import Computer.Memory.Stack;
  * Created by asuss on 19.05.2017.
  */
 public class ControlUnit {
-    int D ;// Determine what next instruction is.(Is it ALU operation or other ones?)
-    char Q; // Demonstrate where data come from(Q=1,Q=0)
-    int S1;//Source address(register)
-    int S2;//Source address(register)
-    int Dest;//Destination address(register)
+    private int D ;// Determine what next instruction is.(Is it ALU operation or other ones?)
+    private char Q; // Demonstrate where data come from(Q=1,Q=0)
+    private int S1;//Source address(register)
+    private int S2;//Source address(register)
+    private int Dest;//Destination address(register)
+
     public int T;//Sequence Counter
     public void fetch(Register IR, ProgramCounter PC, Instruction IM){
 
@@ -40,11 +41,59 @@ public class ControlUnit {
         return temp;
     }
 
-    public void execute(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR){
+    public void execute(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR,Register R0,Register R1,Register R2){
         //Stackpointer arttırılacak!!!!!!!!!!!!!!!,,,Sequence Counter sıfırlanacak....!!!!!!!!!!!!!!!!!!!
         if(D==0){
             //call alu.add function
         }
+        else if(D==1){
+
+        }
+        else if(D==2){
+
+        }
+        else if(D==3){
+
+        }
+        else if(D==4){
+
+        }
+        else if(D==5){
+
+        }
+        else if(D==6){//LD
+            load(AR,DM,R0,R1,R2);
+        }
+        else if(D==7){//ST
+            store(AR,DM,R0,R1,R2);
+        }
+        else if(D==8){
+
+        }
+        else if(D==9){//TSF
+            transfer(R0,R1,R2);
+        }
+        else if(D==10){//CAL
+            call(SM,SP,PC);
+        }
+        else if(D==11){//RET
+
+        }
+        else if(D==12){//JMP
+            jump(PC);
+        }
+        else if(D==13){//JMR
+
+        }
+        else if(D==14){//PSH
+
+        }
+        else if(D==15){//POP
+
+        }
+
+
+
     }
     public String step(Data DM, Register AR, Stack SM,StackPointer SP,ProgramCounter PC, Register IR,Instruction IM,Register R0,Register R1,Register R2,Register inpr,Register outr){
         if(T==0 || T==1){
@@ -55,36 +104,137 @@ public class ControlUnit {
 
         }
         else if(T>2 && T<16){
-            execute(DM,AR,SM,SP,PC,IR);
-            T=0;
+            execute(DM,AR,SM,SP,PC,IR,R0,R1,R2);
+            //T=0;
 
         }
         return null;
     }
-    public void load(Register AR,Data DM){
+    public void load(Register AR,Data DM,Register R0,Register R1,Register R2){
+        Register temp;
+        if(Q=='0'){
+            if(T==3){
+                AR.data=toBinary(4);
+                T++;
+            }
+            else if(T==4){
+                //chooseRegister(R0,R1,R2,DM,DM.getData()[Integer.parseInt(AR.data,2)],0);
+                temp=chooseRegister(Dest,R0,R1,R2);
+                temp.data=DM.getData()[Integer.parseInt(AR.data,2)];
+                T=0;
+            }
+        }
+        else if(Q=='1'){
+           //chooseRegister(R0,R1,R2,DM,toBinary(S1,S2),0);
+            temp=chooseRegister(Dest,R0,R1,R2);
+            temp.data=toBinary(4);
+           T=0;
+        }
 
     }
-    public void store(){
 
-    }public void transfer(){
+    public void store(Register AR,Data DM,Register R0,Register R1,Register R2){
+        Register dest_reg,src_reg;
+        if(Q=='0'){
+            if(T==3){
+                AR.data=toBinary(4);
+                T++;
+            }
+            else if(T==4){
+                //chooseRegister(R0,R1,R2,DM,AR.data,1);
+                dest_reg=chooseRegister(Dest,R0,R1,R2);
+                DM.getData()[Integer.parseInt(AR.data,2)]=dest_reg.data;
+                T=0;
+            }
+        }
+        else if(Q=='1'){
+            dest_reg=chooseRegister(S2,R0,R1,R2);
+            src_reg=chooseRegister(Dest,R0,R1,R2);
 
+            dest_reg.data=src_reg.data;
+            T=0;
+        }
     }
-    public void call(){
+    public void transfer(Register R0,Register R1,Register R2){
+            Register dest_reg,src_reg;
+
+            dest_reg=chooseRegister(Dest,R0,R1,R2);
+            src_reg=chooseRegister(S1,R0,R1,R2);
+
+            dest_reg.data=src_reg.data;
+
+            T=0;
+    }
+
+    public void call(Stack SM,StackPointer SP,ProgramCounter PC){
+        if(T==3){
+            SM.getData()[Integer.parseInt(SP.data,2)]=toBinary(4);
+            T++;
+        }
+        else if(T==4){
+            PC.setData(Integer.parseInt(toBinary(5),2));
+            SP.increment();
+            T=0;
+        }
 
     }
     public void  RET(){
 
     }
-    public void jump(){
 
+
+    public void jump(ProgramCounter PC){
+        PC.setData(Integer.parseInt(toBinary(5),2));
+        T=0;
     }
-    public void jumpRelative(){
-
+    public void jumpRelative(ProgramCounter PC){
+        PC.setData(PC.getData()+Integer.parseInt(toBinary(4),2));
+        T=0;
     }
     public void push(){
 
     }
     public void pop(){
+
+    }
+
+    public String toBinary(int length){
+        String tmp1,tmp2,tmp3="";
+
+        tmp1=Integer.toBinaryString(S1);
+        tmp2=Integer.toBinaryString(S2);
+
+        if(tmp1.equals("0") || tmp1.equals("1")){
+            tmp1="0" + tmp1;
+        }
+
+        if(tmp2.equals("0") || tmp2.equals("1")){
+            tmp2="0" + tmp2;
+        }
+
+        if(length==5){
+            tmp3=Integer.toBinaryString(Dest);
+        }
+
+        if(tmp3.length()==2){
+            tmp3=tmp3.substring(1,2);
+        }
+
+        return tmp3+tmp1+tmp2;
+    }
+
+    public Register chooseRegister(int parameter,Register R0,Register R1,Register R2){
+        if(parameter==0){
+            return R0;
+        }
+        else if(parameter==1){
+            return R1;
+        }
+        else if(parameter==2){
+            return R2;
+        }
+
+        return null;
 
     }
 
