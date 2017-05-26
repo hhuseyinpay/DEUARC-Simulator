@@ -18,7 +18,9 @@ public class StackPointer extends Register {
         data=Integer.toBinaryString(data_int);
     }
     public void decrement(){//???
-
+        int data_int=Integer.parseInt(data,2);
+        data_int--;
+        data=Integer.toBinaryString(data_int);
     }
 
 }

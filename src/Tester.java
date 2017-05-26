@@ -245,7 +245,13 @@ class Tester extends JFrame {
         register1Txtfl.setText(computer.cpu.R1.data);
         register2Txtfl.setText(computer.cpu.R2.data);
 
+        stackMemoryTxtAr.setText("");
+        dataMemoryTxtAr.setText("");
 
+        for (int i = 0; i < 16; i++) {
+            stackMemoryTxtAr.append(computer.stackMem.getData()[i]+"\n");
+            dataMemoryTxtAr.append(computer.dataMem.getData()[i]+"\n");
+        }
 
 
 

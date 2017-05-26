@@ -9,9 +9,9 @@ import Computer.Memory.Stack;
  * Created by asuss on 19.05.2017.
  */
 public class Computer {
-    Instruction instMem;
-    Stack stackMem;
-    Data dataMem;
+    public Instruction instMem;
+    public Stack stackMem;
+    public Data dataMem;
     public CPU cpu;
 
     public Computer(String[] instMem,String[] datamem) {

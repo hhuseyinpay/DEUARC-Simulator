@@ -302,7 +302,7 @@ public class Compiler {
             lex = lexem.getLexes();
             if (lex[0].charAt(lex[0].length() - 1) == ':') {
                 subLabelTable[count][0] = lex[0].substring(0, lex[0].length() - 1);
-                subLabelTable[count][1] = toBinary(instPointer + j, 5);
+                subLabelTable[count][1] = toBinary(instPointer + j-1, 5);
                 count++;
 
                 int len = lex.length;
