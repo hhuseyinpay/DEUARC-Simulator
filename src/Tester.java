@@ -25,6 +25,7 @@ class Tester extends JFrame {
     private StyledDocument doc;
     private Style style;
     private Computer computer;
+    private boolean isHLT;
 
 
 
@@ -33,6 +34,7 @@ class Tester extends JFrame {
         loginPanel.setVisible(true);
         compilePanel.setVisible(false);
         computerPanel.setVisible(false);
+        isHLT=false;
     }
 
     private void exitProcedure() {
@@ -218,22 +220,32 @@ class Tester extends JFrame {
 
     private void stepRunMouseClicked(MouseEvent e) {
 
-        if(computer.cpu.controlUnit.T==0){
-            microInstructionsTxtAr.append("T0 : IR <- IM[PC]"+"\n");
-        }
-        else if(computer.cpu.controlUnit.T==1){
-            microInstructionsTxtAr.append("T1 : PC <- PC + 1"+"\n");
-        }
-        else if(computer.cpu.controlUnit.T==2){
-            microInstructionsTxtAr.append("T2 : D0..D15 <- IR[9..6], Q <- IR[10], S2 <- IR[1..0], S1 <- IR[3..2], D <- IR[5..4]"+"\n");
+        if(isHLT){
+            JOptionPane.showMessageDialog(this,"Program is finished!","Finished",JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         clockCycle.setText(Integer.toString(computer.cpu.controlUnit.T));
 
         String temp = computer.stepRun();
-        if(temp!=null){
-            InstPartxt.setText(temp);
+
+
+        if(temp==null){
+            return;
         }
+
+        if(temp.equals("ENDofPROGRAM")){
+            computer.cpu.controlUnit.T=0;
+            computer.cpu.PC.setData(0);
+            isHLT=true;
+            return;
+        }
+
+        if(computer.cpu.controlUnit.T-1==0){
+            microInstructionsTxtAr.setText("");
+        }
+        microInstructionsTxtAr.append(temp+"\n");
+
 
         instructionRegisterTxtfl.setText(computer.cpu.IR.data);
         addressRegisterTxtfl.setText(computer.cpu.AR.data);

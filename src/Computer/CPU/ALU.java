@@ -7,25 +7,33 @@ import Computer.Computer;
  */
 public class ALU {
 
-    public void add(Register dest,Register src1,Register src2) {
+    public String  add(Register dest,Register src1,Register src2) {
         int tmp=toDecimal(src1.data) + toDecimal(src2.data);
 
         dest.data=toBinary(tmp,4);
 
+        return "T3 : D <- S1+S2, SC <- 0";
+
     }
 
-    public void inc(Register dest,Register src1) {
+    public String  inc(Register dest,Register src1) {
         dest.data=toBinary(toDecimal(src1.data)+1,4);
+        return "T3 : D <- S1 + 1, SC <- 0";
     }
-    public void dbl(Register dest,Register src1) {
+
+    public String dbl(Register dest,Register src1) {
         int tmp=toDecimal(src1.data) + toDecimal(src1.data);
 
         dest.data=toBinary(tmp,4);
+        return "T3 : D <- S1+S1, SC <- 0";
     }
-    public void dbt(Register dest,Register src1) {
+
+    public String dbt(Register dest,Register src1) {
         dest.data="0"+src1.data.substring(0,src1.data.length()-1);
+        return "T3 : D <- S1>>, SC <- 0";
     }
-    public void not(Register dest,Register src1) {
+
+    public String not(Register dest,Register src1) {
 
         String tmp="";
 
@@ -40,9 +48,10 @@ public class ALU {
         }
 
         dest.data=tmp;
+        return "D <- S1', SC <- 0";
 
     }
-    public void and(Register dest,Register src1,Register src2) {
+    public String and(Register dest,Register src1,Register src2) {
         String tmp="";
 
         for (int i = 0; i < 4 ; i++) {
@@ -56,6 +65,8 @@ public class ALU {
         }
 
         dest.data=tmp;
+
+        return "T3 : D <- S1^S2, SC <- 0";
 
     }
 

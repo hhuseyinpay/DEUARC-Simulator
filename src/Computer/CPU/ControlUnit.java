@@ -18,15 +18,20 @@ public class ControlUnit {
 
     public int T;//Sequence Counter
 
-    public void fetch(Register IR, ProgramCounter PC, Instruction IM) {
+    public String  fetch(Register IR, ProgramCounter PC, Instruction IM) {
 
         if (T == 0) {
             IR.setData(IM.getData()[PC.getData()]);
+            T++;
+            return "T0 : IR <- IM[PC]";
         }
         else if (T == 1) {
             PC.setData(PC.getData() + 1);
+            T++;
+            return "T1 : PC <- PC + 1";
         }
-        T++;
+
+        return null;
 
     }
 
@@ -38,11 +43,10 @@ public class ControlUnit {
         S1 = Integer.parseInt(IR.data.substring(7, 9), 2);
         S2 = Integer.parseInt(IR.data.substring(9, 11), 2);
         T++;
-        String temp = "Opcode : " + D + '\n' + "Destination : " + Dest + '\n' + "S2 : " + S2 + '\n' + "S1 : " + S1 + '\n';//GEÇİCİ AT KAFASI
-        return temp;
+        return "T2 : D0..D15 <- IR[9..6], Q <- IR[10], S2 <- IR[1..0], S1 <- IR[3..2], D <- IR[5..4]";
     }
 
-    public void execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,ALU alu) {
+    public String execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,ALU alu) {
         //Stackpointer arttırılacak!!!!!!!!!!!!!!!,,,Sequence Counter sıfırlanacak....!!!!!!!!!!!!!!!!!!!
         Register src1,src2,dest;
 
@@ -52,134 +56,149 @@ public class ControlUnit {
             src1=chooseRegister(S1,R0,R1,R2);
             src2=chooseRegister(S2,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
-
-            alu.add(dest,src1,src2);
             T=0;
+            return alu.add(dest,src1,src2);
+
 
         }
         else if (D == 1) {//INC
             src1=chooseRegister(S1,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
 
-            alu.inc(dest,src1);
+
             T=0;
+            return alu.inc(dest,src1);
         }
         else if (D == 2) {//DBL
             src1=chooseRegister(S1,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
-
-            alu.dbl(dest,src1);
             T=0;
+            return alu.dbl(dest,src1);
+
+
         }
         else if (D == 3) {//DBT
             src1=chooseRegister(S1,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
-
-            alu.dbt(dest,src1);
             T=0;
+            return alu.dbt(dest,src1);
+
         }
         else if (D == 4) {//NOT
             src1=chooseRegister(S1,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
-
-            alu.not(dest,src1);
             T=0;
+            return alu.not(dest,src1);
+
 
         }
         else if (D == 5) {//AND
             src1=chooseRegister(S1,R0,R1,R2);
             src2=chooseRegister(S2,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
-
-            alu.and(dest,src1,src2);
             T=0;
+            return alu.and(dest,src1,src2);
+
 
         }
         else if (D == 6) {//LD
-            load(AR, DM, R0, R1, R2);
+            return load(AR, DM, R0, R1, R2);
         }
         else if (D == 7) {//ST
-            store(AR, DM, R0, R1, R2);
+            return store(AR, DM, R0, R1, R2);
         }
         else if (D == 8) {//HLT
-
+            return hlt();
         }
         else if (D == 9) {//TSF
-            transfer(R0, R1, R2);
+            return transfer(R0, R1, R2);
         }
         else if (D == 10) {//CAL
-            call(SM, SP, PC);
+            return call(SM, SP, PC);
         }
         else if (D == 11) {//RET
-            RET(SM,SP,PC);
+            return RET(SM,SP,PC);
         }
         else if (D == 12) {//JMP
-            jump(PC);
+            return jump(PC);
         }
         else if (D == 13) {//JMR
-            jumpRelative(PC);
+            return jumpRelative(PC);
         }
         else if (D == 14) {//PSH
-            push(AR,SM,SP,DM);
+            return push(AR,SM,SP,DM);
         }
         else if (D == 15) {//POP
-            pop(AR,SM,SP,DM);
+            return pop(AR,SM,SP,DM);
         }
 
-
+        return null;
     }
 
     public String step(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Instruction IM, Register R0, Register R1, Register R2, Register inpr, Register outr,ALU alu) {
         if (T == 0 || T == 1) {
-            fetch(IR, PC, IM);
+            return fetch(IR, PC, IM);
         }
         else if (T == 2) {
             return decode(IR);//GEÇİCİ ATTTTTTTTTTTTTTTT
 
         }
         else if (T > 2 && T < 16) {
-            execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,alu);
+            return execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,alu);
             //T=0;
 
         }
+
         return null;
     }
 
-    public void load(Register AR, Data DM, Register R0, Register R1, Register R2) {
+    public String hlt(){
+        return "ENDofPROGRAM";
+    }
+
+    public String load(Register AR, Data DM, Register R0, Register R1, Register R2) {
         Register temp;
         if (Q == '0') {
             if (T == 3) {
                 AR.data = toBinary(4);
                 T++;
+                return "T3 : AR <- S1S2";
             }
             else if (T == 4) {
                 //chooseRegister(R0,R1,R2,DM,DM.getData()[Integer.parseInt(AR.data,2)],0);
                 temp = chooseRegister(Dest, R0, R1, R2);
                 temp.data = DM.getData()[Integer.parseInt(AR.data, 2)];
                 T = 0;
+                return "T4 : D <- DM[AR], SC <- 0";
             }
+
         }
         else if (Q == '1') {
             //chooseRegister(R0,R1,R2,DM,toBinary(S1,S2),0);
             temp = chooseRegister(Dest, R0, R1, R2);
             temp.data = toBinary(4);
             T = 0;
+            return "T3 : D <- S1S2, SC <- 0";
         }
+
+        return null;
 
     }
 
-    public void store(Register AR, Data DM, Register R0, Register R1, Register R2) {
+    public String store(Register AR, Data DM, Register R0, Register R1, Register R2) {
         Register dest_reg, src_reg;
         if (Q == '0') {
             if (T == 3) {
                 AR.data = toBinary(4);
                 T++;
+                return "T3 : AR <- S1S2";
             }
             else if (T == 4) {
                 //chooseRegister(R0,R1,R2,DM,AR.data,1);
                 dest_reg = chooseRegister(Dest, R0, R1, R2);
                 DM.getData()[Integer.parseInt(AR.data, 2)] = dest_reg.data;
                 T = 0;
+                return "T4 : DM[AR] <- D, SC <- 0";
             }
         }
         else if (Q == '1') {
@@ -188,10 +207,13 @@ public class ControlUnit {
 
             dest_reg.data = src_reg.data;
             T = 0;
+            return "T3 : S2 <- D, SC <- 0";
         }
+
+        return null;
     }
 
-    public void transfer(Register R0, Register R1, Register R2) {
+    public String transfer(Register R0, Register R1, Register R2) {
         Register dest_reg, src_reg;
 
         dest_reg = chooseRegister(Dest, R0, R1, R2);
@@ -200,73 +222,95 @@ public class ControlUnit {
         dest_reg.data = src_reg.data;
 
         T = 0;
+
+        return "T3 : D <- S1, SC <- 0";
     }
 
-    public void call(Stack SM, StackPointer SP, ProgramCounter PC) {
+    public String  call(Stack SM, StackPointer SP, ProgramCounter PC) {
         if (T == 3) {
             SM.getData()[Integer.parseInt(SP.data, 2)] = Integer.toBinaryString(PC.getData());
             T++;
+            return "T3 : SM[SP] <- PC";
         }
         else if (T == 4) {
             PC.setData(Integer.parseInt(toBinary(5), 2));
             SP.increment();
             T = 0;
+            return "T4 : PC <- IR[4..0], SP <- SP + 1, SC <- 0";
         }
+
+        return null;
 
     }
 
-    public void RET(Stack SM, StackPointer SP, ProgramCounter PC) {
+    public String  RET(Stack SM, StackPointer SP, ProgramCounter PC) {
         if (T == 3) {
             SP.decrement();
             T++;
+            return "T3 : SP <- SP -1";
         }
         else if (T == 4) {
             PC.setData(SM.getData()[Integer.parseInt(SP.data)]);
             T = 0;
+            return "T4 : PC <- SM[SP], SC <- 0";
         }
 
+        return null;
+
     }
 
 
-    public void jump(ProgramCounter PC) {
+    public String jump(ProgramCounter PC) {
         PC.setData(Integer.parseInt(toBinary(5), 2));
         T = 0;
+        return "T3 : PC <- IR[4..0], SC <- 0";
     }
 
-    public void jumpRelative(ProgramCounter PC) {
+    public String jumpRelative(ProgramCounter PC) {
         PC.setData(PC.getData() + Integer.parseInt(toBinary(4), 2));
         T = 0;
+        return "T4 : PC <- PC + IR[3..0], SC <- 0";
     }
 
-    public void push(Register AR,Stack SM,StackPointer SP,Data DM) {
+    public String  push(Register AR,Stack SM,StackPointer SP,Data DM) {
         if (T == 3) {
             AR.setData(toBinary(4));
             T++;
+            return "T3 : AR <- IR[3..0]";
         }
         else if (T == 4) {
             SM.getData()[Integer.parseInt(SP.data)]=DM.getData()[Integer.parseInt(AR.data)];
             T++;
+            return "T4 : SM[SP] <- DM[AR]";
         }
         else if (T == 5) {
             SP.increment();
             T=0;
+            return "T5 : SP <- SP + 1, SC <- 0";
         }
+
+        return null;
 
     }
 
-    public void pop(Register AR,Stack SM,StackPointer SP,Data DM) {
+    public String  pop(Register AR,Stack SM,StackPointer SP,Data DM) {
         if (T == 3) {
             AR.setData(toBinary(4));
             T++;
+            return "T3 : AR <- IR[3..0]";
         }
         else if (T == 4) {
             SP.decrement();
             T++;
+            return "T4 : SP <- SP -1";
         }
         else if (T == 5) {
             DM.getData()[Integer.parseInt(AR.data)]=SM.getData()[Integer.parseInt(SP.data)];
             T=0;
+            return "T5 : DM[AR] <- SM[SP], SC <- 0";
         }
+
+        return null;
     }
 
     public String toBinary(int length) {
