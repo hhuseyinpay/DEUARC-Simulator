@@ -46,7 +46,7 @@ public class ControlUnit {
         return "T2 : D0..D15 <- IR[9..6], Q <- IR[10], S2 <- IR[1..0], S1 <- IR[3..2], D <- IR[5..4]";
     }
 
-    public String execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,ALU alu) {
+    public String execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,ALU alu,Register OVERFLOW) {
         //Stackpointer arttırılacak!!!!!!!!!!!!!!!,,,Sequence Counter sıfırlanacak....!!!!!!!!!!!!!!!!!!!
         Register src1,src2,dest;
 
@@ -57,7 +57,7 @@ public class ControlUnit {
             src2=chooseRegister(S2,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
             T=0;
-            return alu.add(dest,src1,src2);
+            return alu.add(dest,src1,src2,OVERFLOW);
 
 
         }
@@ -67,13 +67,13 @@ public class ControlUnit {
 
 
             T=0;
-            return alu.inc(dest,src1);
+            return alu.inc(dest,src1,OVERFLOW);
         }
         else if (D == 2) {//DBL
             src1=chooseRegister(S1,R0,R1,R2);
             dest=chooseRegister(Dest,R0,R1,R2);
             T=0;
-            return alu.dbl(dest,src1);
+            return alu.dbl(dest,src1,OVERFLOW);
 
 
         }
@@ -135,7 +135,7 @@ public class ControlUnit {
         return null;
     }
 
-    public String step(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Instruction IM, Register R0, Register R1, Register R2, Register inpr, Register outr,ALU alu) {
+    public String step(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Instruction IM, Register R0, Register R1, Register R2, Register inpr, Register outr,ALU alu,Register OVERFLOW) {
         if (T == 0 || T == 1) {
             return fetch(IR, PC, IM);
         }
@@ -144,7 +144,7 @@ public class ControlUnit {
 
         }
         else if (T > 2 && T < 16) {
-            return execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,alu);
+            return execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,alu,OVERFLOW);
             //T=0;
 
         }

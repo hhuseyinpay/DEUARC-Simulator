@@ -18,6 +18,17 @@ class FileOperation {
         return false;
     }
 
+    public boolean extentionCheckermif(String path) {
+
+        int len = path.length();
+        for (int i = len; i > 0; i--) {
+            if (path.charAt(i - 1) == '.') {
+                return path.substring(i).equals("mif");
+            }
+        }
+        return false;
+    }
+
     public String readFile(String path) {
         InputStream is;
         BufferedReader buf;

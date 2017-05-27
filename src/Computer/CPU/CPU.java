@@ -19,6 +19,7 @@ public class CPU {
     public Register inpr;
     public Register outr;
     public Register IR;
+    public Register overflow;
 
     public CPU() {
         alu=new ALU();
@@ -32,11 +33,14 @@ public class CPU {
         inpr = new Register(4);
         outr = new Register(4);
         IR = new Register(11);
+        overflow = new Register(5);
+        overflow.data="false";
+
 
     }
 
     public String run(Data DM, Instruction IM, Stack SM){
-        return controlUnit.step(DM,AR,SM,SP,PC,IR,IM,R0,R1,R2,inpr,outr,alu);
+        return controlUnit.step(DM,AR,SM,SP,PC,IR,IM,R0,R1,R2,inpr,outr,alu,overflow);
 
     }
 

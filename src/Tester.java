@@ -2,7 +2,8 @@ import Computer.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
+
 import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -49,6 +50,28 @@ class Tester extends JFrame {
         if (answer == JOptionPane.YES_OPTION) {
             parseOK = false;
             codePane.setBackground(Color.WHITE);
+
+            instructionRegisterTxtfl.setText("0 0 0 0 0 0 0 0 0 0 0");
+            addressRegisterTxtfl.setText("0 0 0 0 0");
+            programCounterTxtfl.setText("0 0 0 0");
+            stackPointerTxtfl.setText("0 0 0 0");
+            inputRegisterTxtfl.setText("0 0 0 0");
+            outputRegisterTxtfl.setText("0 0 0 0");
+
+            register0Txtfl.setText("0 0 0 0");
+            register1Txtfl.setText("0 0 0 0");
+            register2Txtfl.setText("0 0 0 0");
+
+            overflowTxtfl.setText("false");
+
+            clockCycle.setText("0");
+
+            instructionMemoryTxtAr.setText("");
+            dataMemoryTxtAr.setText("");
+            stackMemoryTxtAr.setText("");
+            labelTableTxtPn.setText("");
+            assemblyTxtpn.setText("");
+            microInstructionsTxtAr.setText("");
 
             compilePanel.setVisible(false);
             computerPanel.setVisible(false);
@@ -141,6 +164,7 @@ class Tester extends JFrame {
                 parseOK = false;
             } else {
 
+                assemblyTxtpn.setText(codePane.getText());
                 codePane.setText("");
                 compileInit(inst);
                 compilePanel.setVisible(false);
@@ -157,6 +181,8 @@ class Tester extends JFrame {
                 for (int i = 32; i <48 ; i++) {
                     tmpData[i-32]=inst[i];
                 }
+
+
 
                 computer = new Computer(tmpInst,tmpData);
 
@@ -218,8 +244,7 @@ class Tester extends JFrame {
         mainScreenProcedure();
     }
 
-    private void stepRunMouseClicked(MouseEvent e) {
-
+    public void runstep(){
         if(isHLT){
             JOptionPane.showMessageDialog(this,"Program is finished!","Finished",JOptionPane.ERROR_MESSAGE);
             return;
@@ -228,7 +253,6 @@ class Tester extends JFrame {
         clockCycle.setText(Integer.toString(computer.cpu.controlUnit.T));
 
         String temp = computer.stepRun();
-
 
         if(temp==null){
             return;
@@ -257,6 +281,10 @@ class Tester extends JFrame {
         register1Txtfl.setText(computer.cpu.R1.data);
         register2Txtfl.setText(computer.cpu.R2.data);
 
+        if(computer.cpu.overflow.data.equals("true")){
+            overflowTxtfl.setText("true");
+        }
+
         stackMemoryTxtAr.setText("");
         dataMemoryTxtAr.setText("");
 
@@ -266,8 +294,77 @@ class Tester extends JFrame {
         }
 
 
+    }
+
+    private void stepRunMouseClicked(MouseEvent e) {
+        runstep();
+
+    }
+
+    private void exportBtnMouseClicked(MouseEvent e) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.showOpenDialog(fileChooser);
+        File selectedFile = fileChooser.getSelectedFile();
+
+        if (selectedFile == null || !selectedFile.isFile() || !fo.extentionChecker(filePath)) {
+            return;
+        }
+
+        try {
+
+            FileOutputStream fos = new FileOutputStream(selectedFile);
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
 
+            bw.write("DEPTH = 32;            -- The size of memory in words");
+            bw.newLine();
+            bw.write("WIDTH = 11;            -- The size of data in bits");
+            bw.newLine();
+            bw.write("ADDRESS_RADIX = HEX;   -- The radix for address values");
+            bw.newLine();
+            bw.write("DATA_RADIX = BIN;      -- The radix for data values");
+            bw.newLine();
+            bw.write("CONTENT                -- start of (address : data pairs)");
+            bw.newLine();
+            bw.write("BEGIN");
+            bw.newLine();
+
+            for (int i = 0; i < 32; i++) {
+                if(computer.instMem.getData()[i]==null){
+                    bw.write(((i % 16 == i)?"0":"")+Integer.toHexString(i)+ " : " + "00000000000" + ";");
+                }
+                else{
+                    bw.write(((i % 16 == i)?"0":"") + Integer.toHexString(i)+ " : " + computer.instMem.getData()[i] + ";");
+
+                }
+
+                bw.newLine();
+            }
+
+            bw.write("END;");
+
+            bw.close();
+
+
+
+        } catch (IOException es) {
+            es.printStackTrace();
+        }
+
+    }
+
+    private void button1MouseClicked(MouseEvent e) {
+        do{
+            runstep();
+        }while (computer.cpu.controlUnit.T>0);
+    }
+
+    private void button2MouseClicked(MouseEvent e) {
+        while (!isHLT){
+            runstep();
+        }
     }
 
 
@@ -317,8 +414,14 @@ class Tester extends JFrame {
         microInstructionsTxtAr = new JTextArea();
         micInstAddressTxtAr = new JTextArea();
         label16 = new JLabel();
+        LabelOverflow = new JLabel();
+        overflowTxtfl = new JTextField();
+        exportBtn = new JButton();
         scrollPane2 = new JScrollPane();
-        InstPartxt = new JTextArea();
+        assemblyTxtpn = new JTextPane();
+        label17 = new JLabel();
+        label18 = new JLabel();
+        textField1 = new JTextField();
         compilePanel = new JPanel();
         scrollPane1 = new JScrollPane();
         codePane = new JTextPane();
@@ -360,31 +463,31 @@ class Tester extends JFrame {
             addressRegisterTxtfl.setText("0 0 0 0 0");
             addressRegisterTxtfl.setEditable(false);
             computerPanel.add(addressRegisterTxtfl);
-            addressRegisterTxtfl.setBounds(190, 95, 70, addressRegisterTxtfl.getPreferredSize().height);
+            addressRegisterTxtfl.setBounds(205, 95, 70, addressRegisterTxtfl.getPreferredSize().height);
 
             //---- programCounterTxtfl ----
             programCounterTxtfl.setText("0 0 0 0");
             programCounterTxtfl.setEditable(false);
             computerPanel.add(programCounterTxtfl);
-            programCounterTxtfl.setBounds(190, 130, 60, programCounterTxtfl.getPreferredSize().height);
+            programCounterTxtfl.setBounds(205, 130, 60, programCounterTxtfl.getPreferredSize().height);
 
             //---- stackPointerTxtfl ----
             stackPointerTxtfl.setEditable(false);
             stackPointerTxtfl.setText("0 0 0 0");
             computerPanel.add(stackPointerTxtfl);
-            stackPointerTxtfl.setBounds(190, 165, 60, stackPointerTxtfl.getPreferredSize().height);
+            stackPointerTxtfl.setBounds(205, 165, 60, stackPointerTxtfl.getPreferredSize().height);
 
             //---- inputRegisterTxtfl ----
             inputRegisterTxtfl.setEditable(false);
             inputRegisterTxtfl.setText("0 0 0 0");
             computerPanel.add(inputRegisterTxtfl);
-            inputRegisterTxtfl.setBounds(190, 200, 60, inputRegisterTxtfl.getPreferredSize().height);
+            inputRegisterTxtfl.setBounds(205, 200, 60, inputRegisterTxtfl.getPreferredSize().height);
 
             //---- outputRegisterTxtfl ----
             outputRegisterTxtfl.setEditable(false);
             outputRegisterTxtfl.setText("0 0 0 0");
             computerPanel.add(outputRegisterTxtfl);
-            outputRegisterTxtfl.setBounds(190, 235, 60, outputRegisterTxtfl.getPreferredSize().height);
+            outputRegisterTxtfl.setBounds(205, 235, 60, outputRegisterTxtfl.getPreferredSize().height);
 
             //---- instructionRegisterTxtfl ----
             instructionRegisterTxtfl.setText("0 0 0 0 0 0 0 0 0 0 0");
@@ -396,19 +499,19 @@ class Tester extends JFrame {
             register0Txtfl.setEditable(false);
             register0Txtfl.setText("0 0 0 0");
             computerPanel.add(register0Txtfl);
-            register0Txtfl.setBounds(190, 295, 60, register0Txtfl.getPreferredSize().height);
+            register0Txtfl.setBounds(205, 280, 60, register0Txtfl.getPreferredSize().height);
 
             //---- register1Txtfl ----
             register1Txtfl.setEditable(false);
             register1Txtfl.setText("0 0 0 0");
             computerPanel.add(register1Txtfl);
-            register1Txtfl.setBounds(190, 330, 60, 24);
+            register1Txtfl.setBounds(205, 315, 60, 24);
 
             //---- register2Txtfl ----
             register2Txtfl.setEditable(false);
             register2Txtfl.setText("0 0 0 0");
             computerPanel.add(register2Txtfl);
-            register2Txtfl.setBounds(190, 365, 60, 24);
+            register2Txtfl.setBounds(205, 350, 60, 24);
 
             //---- label3 ----
             label3.setText("PROGRAM COUNTER");
@@ -439,17 +542,17 @@ class Tester extends JFrame {
             //---- label8 ----
             label8.setText("REGISTER 0");
             computerPanel.add(label8);
-            label8.setBounds(20, 300, 90, 16);
+            label8.setBounds(20, 285, 90, 16);
 
             //---- label9 ----
             label9.setText("REGISTER 1");
             computerPanel.add(label9);
-            label9.setBounds(20, 335, 75, 16);
+            label9.setBounds(20, 320, 75, 16);
 
             //---- label10 ----
             label10.setText("REGISTER 2");
             computerPanel.add(label10);
-            label10.setBounds(20, 370, 85, 16);
+            label10.setBounds(20, 355, 85, 16);
 
             //---- label11 ----
             label11.setText("Instruction Memory");
@@ -499,21 +602,33 @@ class Tester extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     stepRunMouseClicked(e);
-                   // stepRunMouseClicked(e);
+                    stepRunMouseClicked(e);
                 }
             });
             computerPanel.add(stepRun);
-            stepRun.setBounds(695, 415, 125, 47);
+            stepRun.setBounds(1020, 335, 111, 47);
 
             //---- button1 ----
             button1.setText("Instruction Run");
+            button1.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    button1MouseClicked(e);
+                }
+            });
             computerPanel.add(button1);
-            button1.setBounds(825, 415, button1.getPreferredSize().width, 47);
+            button1.setBounds(965, 385, button1.getPreferredSize().width, 47);
 
             //---- button2 ----
             button2.setText("Run Over");
+            button2.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    button2MouseClicked(e);
+                }
+            });
             computerPanel.add(button2);
-            button2.setBounds(970, 415, 125, 47);
+            button2.setBounds(1075, 385, 111, 47);
 
             //---- btnExit3 ----
             btnExit3.setText("Exit");
@@ -524,7 +639,7 @@ class Tester extends JFrame {
                 }
             });
             computerPanel.add(btnExit3);
-            btnExit3.setBounds(895, 485, 105, 47);
+            btnExit3.setBounds(1080, 505, 111, 47);
 
             //---- btnMainScreen ----
             btnMainScreen.setText("Main Screen");
@@ -535,21 +650,21 @@ class Tester extends JFrame {
                 }
             });
             computerPanel.add(btnMainScreen);
-            btnMainScreen.setBounds(780, 485, btnMainScreen.getPreferredSize().width, 47);
+            btnMainScreen.setBounds(965, 505, 111, 47);
 
             //---- label14 ----
             label14.setText("T");
             label14.setFont(label14.getFont().deriveFont(label14.getFont().getSize() + 20f));
             computerPanel.add(label14);
-            label14.setBounds(95, 445, 40, label14.getPreferredSize().height);
+            label14.setBounds(95, 475, 40, label14.getPreferredSize().height);
 
             //---- clockCycle ----
-            clockCycle.setText("-");
+            clockCycle.setText("0");
             clockCycle.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
             clockCycle.setEditable(false);
             clockCycle.setFont(new Font(".SF NS Text", Font.PLAIN, 45));
             computerPanel.add(clockCycle);
-            clockCycle.setBounds(130, 435, 45, clockCycle.getPreferredSize().height);
+            clockCycle.setBounds(130, 465, 45, clockCycle.getPreferredSize().height);
             computerPanel.add(labelTableAddrTxtPn);
             labelTableAddrTxtPn.setBounds(830, 50, 30, 265);
             computerPanel.add(labelTableTxtPn);
@@ -560,21 +675,55 @@ class Tester extends JFrame {
             computerPanel.add(label15);
             label15.setBounds(new Rectangle(new Point(875, 25), label15.getPreferredSize()));
             computerPanel.add(microInstructionsTxtAr);
-            microInstructionsTxtAr.setBounds(1060, 50, 100, 265);
+            microInstructionsTxtAr.setBounds(595, 350, 360, 210);
             computerPanel.add(micInstAddressTxtAr);
-            micInstAddressTxtAr.setBounds(1025, 50, 30, 265);
+            micInstAddressTxtAr.setBounds(560, 350, 30, 210);
 
             //---- label16 ----
             label16.setText("Micro Instructions");
             computerPanel.add(label16);
-            label16.setBounds(new Rectangle(new Point(1050, 25), label16.getPreferredSize()));
+            label16.setBounds(new Rectangle(new Point(710, 330), label16.getPreferredSize()));
+
+            //---- LabelOverflow ----
+            LabelOverflow.setText("OVERFLOW");
+            computerPanel.add(LabelOverflow);
+            LabelOverflow.setBounds(20, 395, 70, LabelOverflow.getPreferredSize().height);
+
+            //---- overflowTxtfl ----
+            overflowTxtfl.setEditable(false);
+            overflowTxtfl.setText("false");
+            computerPanel.add(overflowTxtfl);
+            overflowTxtfl.setBounds(205, 390, 60, overflowTxtfl.getPreferredSize().height);
+
+            //---- exportBtn ----
+            exportBtn.setText("Export");
+            exportBtn.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    exportBtnMouseClicked(e);
+                }
+            });
+            computerPanel.add(exportBtn);
+            exportBtn.setBounds(1030, 455, 111, 47);
 
             //======== scrollPane2 ========
             {
-                scrollPane2.setViewportView(InstPartxt);
+                scrollPane2.setViewportView(assemblyTxtpn);
             }
             computerPanel.add(scrollPane2);
-            scrollPane2.setBounds(555, 320, 110, 145);
+            scrollPane2.setBounds(1005, 50, 185, 265);
+
+            //---- label17 ----
+            label17.setText("Assembly Code");
+            computerPanel.add(label17);
+            label17.setBounds(new Rectangle(new Point(1065, 25), label17.getPreferredSize()));
+
+            //---- label18 ----
+            label18.setText("ENTER INPUT :");
+            computerPanel.add(label18);
+            label18.setBounds(20, 429, 90, label18.getPreferredSize().height);
+            computerPanel.add(textField1);
+            textField1.setBounds(205, 425, 60, textField1.getPreferredSize().height);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -771,8 +920,14 @@ class Tester extends JFrame {
     protected JTextArea microInstructionsTxtAr;
     protected JTextArea micInstAddressTxtAr;
     private JLabel label16;
+    private JLabel LabelOverflow;
+    private JTextField overflowTxtfl;
+    private JButton exportBtn;
     private JScrollPane scrollPane2;
-    private JTextArea InstPartxt;
+    private JTextPane assemblyTxtpn;
+    private JLabel label17;
+    private JLabel label18;
+    private JTextField textField1;
     private JPanel compilePanel;
     private JScrollPane scrollPane1;
     public JTextPane codePane;
