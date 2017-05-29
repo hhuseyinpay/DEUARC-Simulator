@@ -244,6 +244,10 @@ class Tester extends JFrame {
         mainScreenProcedure();
     }
 
+    public static boolean isNumeric(String maybeNumeric) {
+        return maybeNumeric != null && maybeNumeric.matches("[0-9]+");
+    }
+
     public void runstep(){
         if(isHLT){
             JOptionPane.showMessageDialog(this,"Program is finished!","Finished",JOptionPane.ERROR_MESSAGE);
@@ -252,7 +256,14 @@ class Tester extends JFrame {
 
         clockCycle.setText(Integer.toString(computer.cpu.controlUnit.T));
 
-        String temp = computer.stepRun();
+
+        int input=0;
+
+        if(isNumeric(textField1.getText())){
+            input=Integer.parseInt(textField1.getText());
+        }
+
+        String temp = computer.stepRun(input);
 
         if(temp==null){
             return;
@@ -601,7 +612,6 @@ class Tester extends JFrame {
             stepRun.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    stepRunMouseClicked(e);
                     stepRunMouseClicked(e);
                 }
             });

@@ -46,72 +46,89 @@ public class ControlUnit {
         return "T2 : D0..D15 <- IR[9..6], Q <- IR[10], S2 <- IR[1..0], S1 <- IR[3..2], D <- IR[5..4]";
     }
 
-    public String execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,ALU alu,Register OVERFLOW) {
+    private String toBinarys(int number, int len) {
+        String binary = Integer.toBinaryString(number);
+        StringBuilder tmp = new StringBuilder("0");
+        for (int i = 1; i < len; i++) {
+            tmp.append("0");
+        }
+        if(binary.length()>4){
+            tmp = new StringBuilder(binary.substring(1,binary.length()));
+        }
+        else {
+            tmp = new StringBuilder(tmp.substring(0, len - binary.length()) + binary);
+        }
+
+
+        return tmp.toString();
+    }
+
+    public String execute(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Register R0, Register R1, Register R2,Register inpr,Register outr,ALU alu,Register OVERFLOW,int input) {
         //Stackpointer arttırılacak!!!!!!!!!!!!!!!,,,Sequence Counter sıfırlanacak....!!!!!!!!!!!!!!!!!!!
         Register src1,src2,dest;
 
-
+        inpr.setData(toBinarys(input,4));
 
         if (D == 0) {//ADD
-            src1=chooseRegister(S1,R0,R1,R2);
-            src2=chooseRegister(S2,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            src2=chooseRegister(S2,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
             T=0;
             return alu.add(dest,src1,src2,OVERFLOW);
 
 
         }
         else if (D == 1) {//INC
-            src1=chooseRegister(S1,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
 
 
             T=0;
             return alu.inc(dest,src1,OVERFLOW);
         }
         else if (D == 2) {//DBL
-            src1=chooseRegister(S1,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
             T=0;
             return alu.dbl(dest,src1,OVERFLOW);
 
 
         }
         else if (D == 3) {//DBT
-            src1=chooseRegister(S1,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
             T=0;
             return alu.dbt(dest,src1);
 
         }
         else if (D == 4) {//NOT
-            src1=chooseRegister(S1,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
             T=0;
             return alu.not(dest,src1);
 
 
         }
         else if (D == 5) {//AND
-            src1=chooseRegister(S1,R0,R1,R2);
-            src2=chooseRegister(S2,R0,R1,R2);
-            dest=chooseRegister(Dest,R0,R1,R2);
+            src1=chooseRegister(S1,R0,R1,R2,inpr);
+            src2=chooseRegister(S2,R0,R1,R2,inpr);
+            dest=chooseRegister(Dest,R0,R1,R2,inpr);
             T=0;
             return alu.and(dest,src1,src2);
 
 
         }
         else if (D == 6) {//LD
-            return load(AR, DM, R0, R1, R2);
+            return load(AR, DM, R0, R1, R2,inpr,outr);
         }
         else if (D == 7) {//ST
-            return store(AR, DM, R0, R1, R2);
+            return store(AR, DM, R0, R1, R2,inpr,outr);
         }
         else if (D == 8) {//HLT
             return hlt();
         }
         else if (D == 9) {//TSF
-            return transfer(R0, R1, R2);
+            return transfer(R0, R1, R2,inpr,outr);
         }
         else if (D == 10) {//CAL
             return call(SM, SP, PC);
@@ -135,7 +152,7 @@ public class ControlUnit {
         return null;
     }
 
-    public String step(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Instruction IM, Register R0, Register R1, Register R2, Register inpr, Register outr,ALU alu,Register OVERFLOW) {
+    public String step(Data DM, Register AR, Stack SM, StackPointer SP, ProgramCounter PC, Register IR, Instruction IM, Register R0, Register R1, Register R2, Register inpr, Register outr,ALU alu,Register OVERFLOW,int input) {
         if (T == 0 || T == 1) {
             return fetch(IR, PC, IM);
         }
@@ -144,7 +161,7 @@ public class ControlUnit {
 
         }
         else if (T > 2 && T < 16) {
-            return execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,alu,OVERFLOW);
+            return execute(DM, AR, SM, SP, PC, IR, R0, R1, R2,inpr,outr,alu,OVERFLOW,input);
             //T=0;
 
         }
@@ -156,7 +173,7 @@ public class ControlUnit {
         return "ENDofPROGRAM";
     }
 
-    public String load(Register AR, Data DM, Register R0, Register R1, Register R2) {
+    public String load(Register AR, Data DM, Register R0, Register R1, Register R2,Register inpr,Register outr) {
         Register temp;
         if (Q == '0') {
             if (T == 3) {
@@ -166,7 +183,7 @@ public class ControlUnit {
             }
             else if (T == 4) {
                 //chooseRegister(R0,R1,R2,DM,DM.getData()[Integer.parseInt(AR.data,2)],0);
-                temp = chooseRegister(Dest, R0, R1, R2);
+                temp = chooseRegister(Dest, R0, R1, R2,inpr);
                 temp.data = DM.getData()[Integer.parseInt(AR.data, 2)];
                 T = 0;
                 return "T4 : D <- DM[AR], SC <- 0";
@@ -175,7 +192,7 @@ public class ControlUnit {
         }
         else if (Q == '1') {
             //chooseRegister(R0,R1,R2,DM,toBinary(S1,S2),0);
-            temp = chooseRegister(Dest, R0, R1, R2);
+            temp = chooseRegister(Dest, R0, R1, R2,inpr);
             temp.data = toBinary(4);
             T = 0;
             return "T3 : D <- S1S2, SC <- 0";
@@ -185,7 +202,7 @@ public class ControlUnit {
 
     }
 
-    public String store(Register AR, Data DM, Register R0, Register R1, Register R2) {
+    public String store(Register AR, Data DM, Register R0, Register R1, Register R2,Register inpr,Register outr) {
         Register dest_reg, src_reg;
         if (Q == '0') {
             if (T == 3) {
@@ -195,15 +212,15 @@ public class ControlUnit {
             }
             else if (T == 4) {
                 //chooseRegister(R0,R1,R2,DM,AR.data,1);
-                dest_reg = chooseRegister(Dest, R0, R1, R2);
+                dest_reg = chooseRegister(Dest, R0, R1, R2,inpr);
                 DM.getData()[Integer.parseInt(AR.data, 2)] = dest_reg.data;
                 T = 0;
                 return "T4 : DM[AR] <- D, SC <- 0";
             }
         }
         else if (Q == '1') {
-            dest_reg = chooseRegister(S2, R0, R1, R2);
-            src_reg = chooseRegister(Dest, R0, R1, R2);
+            dest_reg = chooseRegister(S2, R0, R1, R2,inpr);
+            src_reg = chooseRegister(Dest, R0, R1, R2,inpr);
 
             dest_reg.data = src_reg.data;
             T = 0;
@@ -213,11 +230,11 @@ public class ControlUnit {
         return null;
     }
 
-    public String transfer(Register R0, Register R1, Register R2) {
+    public String transfer(Register R0, Register R1, Register R2,Register inpr,Register outr) {
         Register dest_reg, src_reg;
 
-        dest_reg = chooseRegister(Dest, R0, R1, R2);
-        src_reg = chooseRegister(S1, R0, R1, R2);
+        dest_reg = chooseRegister(Dest, R0, R1, R2,inpr);
+        src_reg = chooseRegister(S1, R0, R1, R2,inpr);
 
         dest_reg.data = src_reg.data;
 
@@ -339,7 +356,7 @@ public class ControlUnit {
     }
 
 
-    public Register chooseRegister(int parameter, Register R0, Register R1, Register R2) {
+    public Register chooseRegister(int parameter, Register R0, Register R1, Register R2,Register inpr) {
         if (parameter == 0) {
             return R0;
         }
@@ -348,6 +365,9 @@ public class ControlUnit {
         }
         else if (parameter == 2) {
             return R2;
+        }
+        else if(parameter == 3){
+            return inpr;
         }
 
         return null;
