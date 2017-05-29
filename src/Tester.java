@@ -61,6 +61,7 @@ class Tester extends JFrame {
             register0Txtfl.setText("0 0 0 0");
             register1Txtfl.setText("0 0 0 0");
             register2Txtfl.setText("0 0 0 0");
+            textField1.setText("");
 
             overflowTxtfl.setText("false");
 
@@ -73,9 +74,14 @@ class Tester extends JFrame {
             assemblyTxtpn.setText("");
             microInstructionsTxtAr.setText("");
 
+            isHLT=false;
+
+
             compilePanel.setVisible(false);
             computerPanel.setVisible(false);
             loginPanel.setVisible(true);
+
+
         }
     }
 

@@ -56,7 +56,7 @@ public class ALU {
         String tmp="";
 
         for (int i = 0; i < 4 ; i++) {
-            if(src1.data.charAt(i)!=src2.data.charAt(i)){
+            if( src1.data.charAt(i) == '0' || src2.data.charAt(i) == '0' ||  src1.data.charAt(i)!=src2.data.charAt(i)){
                 tmp+="0";
             }
             else
